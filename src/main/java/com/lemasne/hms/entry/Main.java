@@ -2,7 +2,7 @@ package com.lemasne.hms.entry;
 
 import com.lemasne.hms.interfaces.IController;
 import com.lemasne.hms.interfaces.IDao;
-import com.lemasne.hms.model.Chambre;
+import com.lemasne.hms.model.entities.Chambre;
 import com.lemasne.hms.model.dao.ChambreDao;
 import java.util.List;
 

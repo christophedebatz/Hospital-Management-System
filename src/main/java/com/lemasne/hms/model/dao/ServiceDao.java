@@ -1,6 +1,6 @@
 package com.lemasne.hms.model.dao;
 
-import com.lemasne.hms.model.Service;
+import com.lemasne.hms.model.entities.Service;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

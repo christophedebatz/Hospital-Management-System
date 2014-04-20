@@ -4,26 +4,26 @@
  * and open the template in the editor.
  */
 
-package com.lemasne.hms.model;
+package com.lemasne.hms.model.entities;
 
 
-public class Malade {
+public class Employe {
+    
     private int numero;
     private String nom;
     private String prenom;
     private String tel;
     private String adresse;
-    private String mutuelle;
 
-    public Malade(int numero, String nom, String prenom, String tel, String adresse, String mutuelle) {
+    public Employe(int numero, String nom, String prenom, String tel, String adresse) {
         this.numero = numero;
         this.nom = nom;
         this.prenom = prenom;
         this.tel = tel;
         this.adresse = adresse;
-        this.mutuelle = mutuelle;
     }
 
+      
     public int getNumero() {
         return numero;
     }
@@ -62,14 +62,6 @@ public class Malade {
 
     public void setAdresse(String adresse) {
         this.adresse = adresse;
-    }
-
-    public String getMutuelle() {
-        return mutuelle;
-    }
-
-    public void setMutuelle(String mutuelle) {
-        this.mutuelle = mutuelle;
     }
     
     

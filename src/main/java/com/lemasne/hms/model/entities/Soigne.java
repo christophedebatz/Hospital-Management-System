@@ -1,4 +1,4 @@
-package com.lemasne.hms.model;
+package com.lemasne.hms.model.entities;
 
 
 public class Soigne 

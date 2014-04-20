@@ -1,6 +1,6 @@
 package com.lemasne.hms.model.dao;
 
-import com.lemasne.hms.model.Employe;
+import com.lemasne.hms.model.entities.Employe;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class EmployeDao extends AbstractDao<Employe> {
+public class ChambreModel extends AbstractDao<Employe> {
     
     
-    public EmployeDao() {
+    public ChambreModel() {
         super(Employe.class, "numero");
     }
     
@@ -33,7 +33,7 @@ public class EmployeDao extends AbstractDao<Employe> {
                 ));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(EmployeDao.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChambreModel.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Could not transtype to list of " + Employe.class.getSimpleName());
         }
         

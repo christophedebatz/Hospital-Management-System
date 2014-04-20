@@ -1,6 +1,6 @@
 package com.lemasne.hms.model.dao;
 
-import com.lemasne.hms.model.Infirmier;
+import com.lemasne.hms.model.entities.Infirmier;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

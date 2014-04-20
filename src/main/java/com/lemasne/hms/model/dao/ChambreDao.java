@@ -1,6 +1,6 @@
 package com.lemasne.hms.model.dao;
 
-import com.lemasne.hms.model.Chambre;
+import com.lemasne.hms.model.entities.Chambre;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
