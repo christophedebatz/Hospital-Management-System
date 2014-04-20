@@ -1,25 +1,25 @@
 package com.lemasne.hms.controller;
 
 import com.lemasne.hms.interfaces.IController;
-import com.lemasne.hms.interfaces.IDao;
+import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.interfaces.IView;
 
 public class ControllerFactory {
 
     private IView view;
-    private IDao dao;
-    private IController controller;
+    private IModel model;
+    private static IController controllerInstance;
     
     
-    public ControllerFactory(IDao dao, IView view) {
+    public ControllerFactory(IModel model, IView view) {
         this.view = view;
-        this.dao = dao;
+        this.model = model;
     }
     
-    public IController getController(String controllerType) {
+    public synchronized IController getController(String controllerType) {
         switch (controllerType) {
             case "homeController":
-                return new HomeController();
+                return HomeController.getInstance(this.model, this.view);
                         
             default:
                 return null;
