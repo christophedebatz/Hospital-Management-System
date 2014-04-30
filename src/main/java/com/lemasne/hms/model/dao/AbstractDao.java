@@ -1,5 +1,6 @@
 package com.lemasne.hms.model.dao;
 
+import com.lemasne.hms.tools.Database;
 import com.lemasne.hms.interfaces.IDao;
 import com.lemasne.hms.tools.QueryBuilder;
 import java.sql.Connection;

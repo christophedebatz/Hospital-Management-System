@@ -5,10 +5,8 @@ import java.util.Map;
 
 
 public interface IDao {
-    
-    ResultSet findById(Object... keysValues);
-    ResultSet findAll();
-    int removeById(Object... keysValues);
-    boolean updateFromId(Map<String, Object> entityParams, Object... columnsKeysValues);
-    
+    public ResultSet findById(Object... keysValues);
+    public ResultSet findAll();
+    public int removeById(Object... keysValues);
+    public boolean updateFromId(Map<String, Object> entityParams, Object... columnsKeysValues);
 }

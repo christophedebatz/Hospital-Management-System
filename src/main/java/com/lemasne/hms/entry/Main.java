@@ -1,24 +1,14 @@
 package com.lemasne.hms.entry;
 
-import com.lemasne.hms.interfaces.IController;
-import com.lemasne.hms.interfaces.IDao;
-import com.lemasne.hms.model.entities.Chambre;
-import com.lemasne.hms.model.dao.ChambreDao;
-import java.util.List;
-
+import com.lemasne.hms.controller.FrontController;
+import com.lemasne.hms.tools.TemplateLoader;
 
 public class Main {
-    public static void main (String[] argv) {
-//        MainWindow mWin = new MainWindow();
-//        mWin.setVisible(true);
+
+    public static void main(String[] argv) {
+
+        TemplateLoader.load("Nimbus");
+        new FrontController();
         
-        IDao cdao = new ChambreDao();
-        List<Chambre> chambres = ChambreDao.getListWith(cdao.findAll());
-        
-        for (Chambre chambre : chambres) {
-            System.out.println(chambre.getCode_service());
-        }
-        
-        IController controller;
     }
 }

@@ -1,4 +1,4 @@
-package com.lemasne.hms.model.dao;
+package com.lemasne.hms.tools;
 
 import java.sql.DriverManager;
 import java.sql.Connection;

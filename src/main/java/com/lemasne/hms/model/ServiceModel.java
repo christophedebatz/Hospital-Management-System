@@ -2,21 +2,21 @@ package com.lemasne.hms.model;
 
 import com.lemasne.hms.interfaces.IDao;
 import com.lemasne.hms.interfaces.IModel;
-import com.lemasne.hms.model.dao.ChambreDao;
+import com.lemasne.hms.model.dao.ServiceDao;
 import com.lemasne.hms.tools.DatabaseHelpers;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-public class ChambreModel implements IModel {
+public class ServiceModel implements IModel {
 
-    private final IDao cDao;
+    private final IDao sDao;
 
-    public ChambreModel() {
-        this.cDao = new ChambreDao();
+    public ServiceModel() {
+        this.sDao = new ServiceDao();
     }
 
     public DefaultTableModel getTableModel() {
-        return DatabaseHelpers.getTableModel(this.cDao);
+        return DatabaseHelpers.getTableModel(this.sDao);
     }
 
     @Override
