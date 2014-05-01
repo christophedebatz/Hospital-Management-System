@@ -1,22 +1,13 @@
 package com.lemasne.hms.model;
 
-import com.lemasne.hms.interfaces.IDao;
-import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.model.dao.ServiceDao;
-import com.lemasne.hms.tools.DatabaseHelpers;
-import javax.swing.table.DefaultTableModel;
+import com.lemasne.hms.model.entities.Service;
 import javax.swing.table.TableModel;
 
-public class ServiceModel implements IModel {
-
-    private final IDao sDao;
+public class ServiceModel extends AbstractModel<Service> {
 
     public ServiceModel() {
-        this.sDao = new ServiceDao();
-    }
-
-    public DefaultTableModel getTableModel() {
-        return DatabaseHelpers.getTableModel(this.sDao);
+        super(Service.class, new ServiceDao());
     }
 
     @Override

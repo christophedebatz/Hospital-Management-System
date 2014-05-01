@@ -2,15 +2,15 @@ package com.lemasne.hms.controller;
 
 import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.interfaces.IView;
-import com.lemasne.hms.model.entities.Chambre;
+import com.lemasne.hms.model.entities.Hospitalisation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class ChambreController extends AbstractController<Chambre> implements ActionListener {
-    
-    public ChambreController(IModel model, IView view) {
-        super(Chambre.class, model, view);
+public class HospitalisationController extends AbstractController<Hospitalisation> implements ActionListener {
+
+    public HospitalisationController(IModel model, IView view) {
+        super(Hospitalisation.class, model, view);
         this.view.setActionListener(this);
     }
     

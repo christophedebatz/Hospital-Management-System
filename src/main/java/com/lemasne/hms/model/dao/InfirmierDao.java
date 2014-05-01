@@ -1,6 +1,9 @@
 package com.lemasne.hms.model.dao;
 
+import com.lemasne.hms.model.entities.Employe;
 import com.lemasne.hms.model.entities.Infirmier;
+import com.lemasne.hms.model.entities.Service;
+import com.lemasne.hms.tools.QueryBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -36,5 +39,26 @@ public class InfirmierDao extends AbstractDao<Infirmier> {
         }
         
         return infirmiers;
+    }
+
+    @Override
+    public ResultSet findAllWithJoins() {
+        ResultSet result = null;
+
+        try {
+            result = this.dbc.prepareStatement(
+                    QueryBuilder.select("Employe.prenom as prenom", "Employe.nom as nom", "tel", "Service.nom as nom_service", "rotation", "salaire")
+                    .from(entityClass)
+                    .leftJoin(Service.class)
+                    .on("code_service", "code")
+                    .leftJoin(Employe.class)
+                    .on("Infirmier.numero", "Employe.numero").toSQL()
+            ).executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChambreDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Could not execute query : " + ex.getMessage());
+        }
+
+        return result;
     }
 }

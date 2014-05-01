@@ -5,32 +5,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class QueryBuilder {
-    
+
     private enum QueryActionType {
+
         SELECT,
         UPDATE,
         DELETE
     }
-    
+
     private String tableName;
     private QueryActionType actionType;
     private List<String> fields;
     private Map<String, Object> whereClauses;
     private Map<String, Object> updateClauses;
+    private Map<String, Map<String, String>> joinClauses;
+    private String currentJoinedTableName;
 
-    private QueryBuilder (List fields, QueryActionType actionType) {
+    private QueryBuilder(List fields, QueryActionType actionType) {
         this.fields = fields;
         this.actionType = actionType;
         this.whereClauses = new HashMap<>();
-        
+
+        if (this.actionType == QueryActionType.SELECT) {
+            this.joinClauses = new HashMap<>();
+        }
+
         if (this.actionType == QueryActionType.UPDATE) {
             this.updateClauses = new HashMap<>();
         }
     }
-    
-    private QueryBuilder (QueryActionType actionType) {
+
+    private QueryBuilder(QueryActionType actionType) {
         this(null, actionType);
     }
 
@@ -40,20 +46,20 @@ public class QueryBuilder {
                 QueryActionType.SELECT
         );
     }
+
     public static QueryBuilder delete() {
         return new QueryBuilder(QueryActionType.DELETE);
     }
-    
+
     public static QueryBuilder update(String... fields) {
         return new QueryBuilder(
                 Arrays.asList(fields),
                 QueryActionType.UPDATE
         );
     }
-    
+
     public QueryBuilder set(Object... fieldsValues) {
-        if (this.actionType == QueryActionType.UPDATE)
-        {
+        if (this.actionType == QueryActionType.UPDATE) {
             if (fieldsValues.length != this.fields.size()) {
                 throw new IllegalArgumentException("Could not map fields with fields values.");
             }
@@ -63,7 +69,7 @@ public class QueryBuilder {
         }
         return this;
     }
-    
+
     public QueryBuilder from(String tableName) {
         this.tableName = tableName;
         return this;
@@ -72,12 +78,23 @@ public class QueryBuilder {
     public QueryBuilder from(Class entityType) {
         return this.from(entityType.getSimpleName());
     }
-    
+
+    public QueryBuilder leftJoin(Class entityType) {
+        this.currentJoinedTableName = entityType.getSimpleName();
+        this.joinClauses.put(this.currentJoinedTableName, new HashMap<String, String>());
+        return this;
+    }
+
+    public QueryBuilder on(String field1, String field2) {
+        this.joinClauses.get(this.currentJoinedTableName).put(field1, field2);
+        return this;
+    }
+
     public QueryBuilder where(String fieldName, Object value) {
         this.whereClauses.put(fieldName, value);
         return this;
     }
-    
+
     public QueryBuilder whereRange(String[] fieldsNames, Object[] fieldsValues) {
         if (fieldsNames.length != fieldsValues.length) {
             throw new IllegalArgumentException("Cannot parse whereRange arguments.");
@@ -87,16 +104,15 @@ public class QueryBuilder {
         }
         return this;
     }
-    
+
     public QueryBuilder addWhere(String fieldName, Object value) {
         return this.where(fieldName, value);
     }
-    
+
     public String toSQL() {
         StringBuilder sb = new StringBuilder();
-        
-        if (this.actionType == QueryActionType.SELECT)
-        {
+
+        if (this.actionType == QueryActionType.SELECT) {
             sb.append("select ");
             int i = 0;
             for (String field : this.fields) {
@@ -104,56 +120,69 @@ public class QueryBuilder {
                 if (i < this.fields.size() - 1) {
                     sb.append(", ");
                 }
+                i++;
             }
             sb.append(" from  ").append(this.tableName);
+            
+            if (!this.joinClauses.isEmpty()) {
+                for (Map.Entry<String, Map<String, String>> joinClause : this.joinClauses.entrySet()) {
+                    sb.append(" left join ").append(joinClause.getKey());
+                    i = 0;
+                    sb.append(" on ");
+                    for (Map.Entry<String, String> onEntry : joinClause.getValue().entrySet()) {
+                        sb.append(onEntry.getKey()).append(" = ").append(onEntry.getValue());
+                        if (i < joinClause.getValue().size() - 1) {
+                            sb.append(", ");
+                        }
+                        i++;
+                    }
+                }
+            }
         }
         
-        else if (this.actionType == QueryActionType.DELETE)
-        {
+        else if (this.actionType == QueryActionType.DELETE) {
             sb.append("delete from ").append(this.tableName);
         }
         
-        else
-        {
+        else {
             sb.append("update ").append(this.tableName).append(" set");
             String separator = "";
             int i = 0;
-            
+
             for (Map.Entry<String, Object> updateClause : this.updateClauses.entrySet()) {
                 if (!(updateClause.getValue() instanceof Integer) && !(updateClause.getValue() instanceof Long)) {
                     separator = "'";
                 }
                 sb.append(" ").append(updateClause.getKey())
-                  .append(" = ").append(separator).append(updateClause.getValue()).append(separator);
-                
+                        .append(" = ").append(separator).append(updateClause.getValue()).append(separator);
+
                 if (i < this.updateClauses.size()) {
                     sb.append(", ");
                 }
             }
         }
-        
-        if (this.whereClauses.size() > 0)
-        {
+
+        if (this.whereClauses.size() > 0) {
             String separator = "";
             sb.append(" where");
             int i = 0;
-            
+
             for (Map.Entry<String, Object> whereClause : this.whereClauses.entrySet()) {
                 if (!(whereClause.getValue() instanceof Integer) && !(whereClause.getValue() instanceof Long)) {
                     separator = "'";
                 }
                 sb.append(" ").append(whereClause.getKey())
-                  .append(" = ").append(separator).append(whereClause.getValue()).append(separator);
-                
+                        .append(" = ").append(separator).append(whereClause.getValue()).append(separator);
+
                 if (i < this.whereClauses.size()) {
                     sb.append(", ");
                 }
             }
         }
-        
-        return  sb.toString();
+
+        return sb.toString();
     }
-    
+
     @Override
     public String toString() {
         return this.toSQL();

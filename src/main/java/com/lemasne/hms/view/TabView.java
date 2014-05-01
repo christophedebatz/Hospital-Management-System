@@ -1,6 +1,8 @@
 package com.lemasne.hms.view;
 
 import com.lemasne.hms.interfaces.IView;
+import com.lemasne.hms.tools.TextPrompt;
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.JTable;
 
@@ -8,12 +10,12 @@ import javax.swing.JTable;
 public class TabView extends javax.swing.JPanel implements IView {
     
     public TabView() {
-        initComponents();
     }
     
     public TabView(String name) {
-        this();
-        super.setName(name.toUpperCase());
+        super.setName(name);
+        initComponents();
+        addComponentBehaviors();
     }
     
     public JTable getTable() {
@@ -23,6 +25,12 @@ public class TabView extends javax.swing.JPanel implements IView {
     public void setActionListener(ActionListener listener) {      
         this.searchButton.setActionCommand("search");
         this.searchButton.addActionListener(listener);
+    }
+    
+    private void addComponentBehaviors() {
+        TextPrompt tp = new TextPrompt("Rechercher un(e) " + super.getName().toLowerCase() + "...", this.searchBox);
+        tp.setForeground(Color.DARK_GRAY);
+        tp.changeAlpha(170);
     }
 
     /**
@@ -42,16 +50,18 @@ public class TabView extends javax.swing.JPanel implements IView {
         searchButton = new javax.swing.JButton();
 
         addButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/File-add-icon.png"))); // NOI18N
         addButton.setText("AJOUTER");
 
         resultsList.setAutoCreateRowSorter(true);
-        resultsList.setCellSelectionEnabled(true);
+		resultsList.setFont(new java.awt.Font("Tahoma", 0, 15));
         resultsList.setName("resultsList"); // NOI18N
         jScrollPane.setViewportView(resultsList);
 
-        searchBox.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        searchBox.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
 
         searchButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        searchButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/Search-icon.png"))); // NOI18N
         searchButton.setText("RECHERCHER");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -64,22 +74,23 @@ public class TabView extends javax.swing.JPanel implements IView {
                     .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(searchBox)
-                        .addGap(18, 18, 18)
-                        .addComponent(searchButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addButton)))
+                        .addGap(14, 14, 14)
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(15, 15, 15)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addButton)
-                    .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchButton))
-                .addGap(15, 15, 15)
-                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchButton))
+                    .addComponent(addButton))
+                .addGap(14, 14, 14)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
                 .addGap(15, 15, 15))
         );
 
@@ -108,10 +119,15 @@ public class TabView extends javax.swing.JPanel implements IView {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
-    private javax.swing.JTable resultsList;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane;
+    private javax.swing.JTable resultsList;
     private javax.swing.JTextField searchBox;
     private javax.swing.JButton searchButton;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void dispose() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

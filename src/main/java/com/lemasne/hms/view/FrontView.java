@@ -1,8 +1,10 @@
 package com.lemasne.hms.view;
 
 import com.lemasne.hms.interfaces.IView;
+import com.lemasne.hms.settings.Constants;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -13,12 +15,29 @@ public class FrontView extends JFrame implements IView {
     
     public FrontView(List<Component> tabViews, ChangeListener tabListener) {
         this.initComponents();
+        this.setLocationRelativeTo(null);
 
         for (Component view : tabViews) {
-            this.homeTab.add(view.getName(), view);
+            this.homeTab.add(view.getName().toUpperCase(), view);
         }
         
         this.homeTab.addChangeListener(tabListener);
+    }
+    
+    public void setItemListener(ItemListener listener) {
+        this.checkboxActivateJoins.addItemListener(listener);
+    }
+    
+    @Override
+    public void setActionListener(ActionListener listener) {
+        this.connexionMenuItem.addActionListener(listener);
+        this.connexionMenuItem.setActionCommand("connect");
+    }
+    
+    
+    @Override
+    public JTable getTable() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     @SuppressWarnings("unchecked")
@@ -31,26 +50,37 @@ public class FrontView extends JFrame implements IView {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu5 = new javax.swing.JMenu();
         connexionMenuItem = new javax.swing.JMenuItem();
+        checkboxActivateJoins = new javax.swing.JCheckBoxMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle(Constants.SOFTWARE_NAME);
+        setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        homeTab.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        homeTab.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
 
         labelIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pictures/hospital.png"))); // NOI18N
         labelIcon.setName(""); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 44)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(153, 0, 0));
         jLabel2.setText("Hospital Management System");
 
+        jMenuBar1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         jMenu5.setText("Fichier");
+        jMenu5.setName(""); // NOI18N
 
         connexionMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         connexionMenuItem.setText("Connexion");
         jMenu5.add(connexionMenuItem);
+
+        checkboxActivateJoins.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.ALT_MASK));
+        checkboxActivateJoins.setText("Activer jointures");
+        checkboxActivateJoins.setName(""); // NOI18N
+        jMenu5.add(checkboxActivateJoins);
 
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText("Quitter");
@@ -76,9 +106,9 @@ public class FrontView extends JFrame implements IView {
                     .addComponent(homeTab)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelIcon)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
                         .addComponent(jLabel2)
-                        .addGap(0, 122, Short.MAX_VALUE)))
+                        .addGap(0, 234, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -101,6 +131,7 @@ public class FrontView extends JFrame implements IView {
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBoxMenuItem checkboxActivateJoins;
     private javax.swing.JMenuItem connexionMenuItem;
     private javax.swing.JTabbedPane homeTab;
     private javax.swing.JLabel jLabel2;
@@ -111,14 +142,4 @@ public class FrontView extends JFrame implements IView {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel labelIcon;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void setActionListener(ActionListener listener) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public JTable getTable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

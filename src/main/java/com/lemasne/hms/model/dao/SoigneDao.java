@@ -35,4 +35,9 @@ public class SoigneDao extends AbstractDao {
 
         return soignes;
     }
+    
+    @Override
+    public ResultSet findAllWithJoins() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

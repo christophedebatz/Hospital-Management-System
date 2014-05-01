@@ -1,6 +1,8 @@
 package com.lemasne.hms.model.dao;
 
+import com.lemasne.hms.model.entities.Employe;
 import com.lemasne.hms.model.entities.Service;
+import com.lemasne.hms.tools.QueryBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,7 +16,6 @@ public class ServiceDao extends AbstractDao<Service> {
     public ServiceDao() {
         super(Service.class, "code");
     }
-    
     
     public static List<Service> getListWith(ResultSet result) {
         if (result == null) {
@@ -37,5 +38,24 @@ public class ServiceDao extends AbstractDao<Service> {
         }
 
         return services;
+    }
+    
+    @Override
+    public ResultSet findAllWithJoins() {
+        ResultSet result = null;
+
+        try {
+            result = this.dbc.prepareStatement(
+                    QueryBuilder.select("code as code_service", "Service.nom as nom_service", "batiment", "prenom as prenom_directeur", "Employe.nom as nom_directeur")
+                    .from(entityClass)
+                    .leftJoin(Employe.class)
+                    .on("directeur", "numero").toSQL()
+            ).executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Could not execute query : " + ex.getMessage());
+        }
+
+        return result;
     }
 }

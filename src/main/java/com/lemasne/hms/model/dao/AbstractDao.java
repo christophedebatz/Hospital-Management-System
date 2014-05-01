@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 abstract class AbstractDao<T> implements IDao {
     
-    private final Class entityClass;
+    protected final Class entityClass;
     protected final String[] keysNames;
     protected Connection dbc;
     
@@ -22,6 +22,7 @@ abstract class AbstractDao<T> implements IDao {
         this.dbc = Database.getInstance().getConnection();
     }
     
+    @Override
     public ResultSet findById(Object... keysValues) {
         ResultSet result = null;
         
@@ -40,21 +41,22 @@ abstract class AbstractDao<T> implements IDao {
         return result;
     }
     
+    @Override
     public ResultSet findAll() {
         ResultSet result = null;
         
         try {
             result = this.dbc.prepareStatement(
-                                QueryBuilder.select("*").from(entityClass).toSQL()).executeQuery();
+                        QueryBuilder.select("*").from(entityClass).toSQL()).executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(AbstractDao.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Could not execute query : " + ex.getMessage());
-            System.err.println(QueryBuilder.select("*").from(entityClass).toSQL());
         }
         
         return result;
     }
     
+    @Override
     public int removeById(Object... keysValues) {
         try {
             return this.dbc.prepareStatement(
@@ -69,6 +71,7 @@ abstract class AbstractDao<T> implements IDao {
         }
     }
     
+    @Override
     public boolean updateFromId(Map<String, Object> entityParams, Object... columnsKeysValues) {
         if (!entityParams.isEmpty())
         {
@@ -96,4 +99,6 @@ abstract class AbstractDao<T> implements IDao {
         }
         return false;
     }
+    
+    public abstract ResultSet findAllWithJoins();
 }

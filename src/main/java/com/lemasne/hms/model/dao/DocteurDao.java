@@ -1,6 +1,9 @@
 package com.lemasne.hms.model.dao;
 
 import com.lemasne.hms.model.entities.Docteur;
+import com.lemasne.hms.model.entities.Employe;
+import com.lemasne.hms.model.entities.Service;
+import com.lemasne.hms.tools.QueryBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,5 +37,24 @@ public class DocteurDao extends AbstractDao<Docteur> {
         }
         
         return docteurs;
+    }
+
+    @Override
+    public ResultSet findAllWithJoins() {
+        ResultSet result = null;
+
+        try {
+            result = this.dbc.prepareStatement(
+                    QueryBuilder.select("nom", "prenom", "tel", "adresse", "specialite")
+                    .from(entityClass)
+                    .leftJoin(Employe.class)
+                    .on("Docteur.numero", "Employe.numero").toSQL()
+            ).executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChambreDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Could not execute query : " + ex.getMessage());
+        }
+
+        return result;
     }
 }

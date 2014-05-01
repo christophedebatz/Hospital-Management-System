@@ -1,31 +1,17 @@
 package com.lemasne.hms.controller;
 
-import com.lemasne.hms.interfaces.IController;
 import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.interfaces.IView;
+import com.lemasne.hms.model.entities.Service;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class ServiceController implements IController, ActionListener {
+public class ServiceController extends AbstractController<Service> implements ActionListener {
 
-    private IModel model;
-    private IView view;
-    
     public ServiceController(IModel model, IView view) {
-        
-        if (model == null || view == null) {
-            throw new IllegalArgumentException("Model or view or both are null.");
-        }
-        
-        this.model = model;
-        this.view = view;
-        this.view.setVisible(true);
+        super(Service.class, model, view);
         this.view.setActionListener(this);
-    }
-    
-    public void loadTable() {
-        this.view.getTable().setModel(this.model.getTableModel());
     }
     
     @Override

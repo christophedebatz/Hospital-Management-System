@@ -37,4 +37,9 @@ public class HospitalisationDao extends AbstractDao<Hospitalisation> {
         
         return hospitalisations;
     }
+
+    @Override
+    public ResultSet findAllWithJoins() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

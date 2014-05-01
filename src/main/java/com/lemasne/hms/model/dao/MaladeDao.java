@@ -1,13 +1,15 @@
 package com.lemasne.hms.model.dao;
 
+import com.lemasne.hms.model.entities.Employe;
 import com.lemasne.hms.model.entities.Malade;
+import com.lemasne.hms.model.entities.Service;
+import com.lemasne.hms.tools.QueryBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 public class MaladeDao extends AbstractDao<Malade> {
     
@@ -38,5 +40,10 @@ public class MaladeDao extends AbstractDao<Malade> {
         }
 
         return malades;
+    }
+    
+    @Override
+    public ResultSet findAllWithJoins() {
+        return super.findAll();
     }
 }

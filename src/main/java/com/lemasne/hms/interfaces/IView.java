@@ -9,4 +9,5 @@ public interface IView {
     public void setActionListener(ActionListener listener);
     public JTable getTable();
     public String getName();
+    public void dispose();
 }

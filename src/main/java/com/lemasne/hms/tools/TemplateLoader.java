@@ -26,7 +26,6 @@ public class TemplateLoader {
     }
 
     public static void initWindowProperties(Window frame) {
-        // frame icon
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage(TemplateLoader.class.getResource("/pictures/hospital.png")));
     }
 }
