@@ -9,7 +9,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.event.ChangeListener;
-
+import javax.swing.event.DocumentListener;
 
 public class FrontView extends JFrame implements IView {
     
@@ -30,16 +30,22 @@ public class FrontView extends JFrame implements IView {
     
     @Override
     public void setActionListener(ActionListener listener) {
+        this.closeMenuItem.addActionListener(listener);
+        this.closeMenuItem.setActionCommand("close");
         this.connexionMenuItem.addActionListener(listener);
         this.connexionMenuItem.setActionCommand("connect");
     }
-    
     
     @Override
     public JTable getTable() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    @Override
+    public void addSearchBoxListener(DocumentListener listener) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -51,7 +57,7 @@ public class FrontView extends JFrame implements IView {
         jMenu5 = new javax.swing.JMenu();
         connexionMenuItem = new javax.swing.JMenuItem();
         checkboxActivateJoins = new javax.swing.JCheckBoxMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        closeMenuItem = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
 
@@ -82,9 +88,9 @@ public class FrontView extends JFrame implements IView {
         checkboxActivateJoins.setName(""); // NOI18N
         jMenu5.add(checkboxActivateJoins);
 
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        jMenuItem1.setText("Quitter");
-        jMenu5.add(jMenuItem1);
+        closeMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        closeMenuItem.setText("Quitter");
+        jMenu5.add(closeMenuItem);
 
         jMenuBar1.add(jMenu5);
 
@@ -132,6 +138,7 @@ public class FrontView extends JFrame implements IView {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem checkboxActivateJoins;
+    private javax.swing.JMenuItem closeMenuItem;
     private javax.swing.JMenuItem connexionMenuItem;
     private javax.swing.JTabbedPane homeTab;
     private javax.swing.JLabel jLabel2;
@@ -139,7 +146,11 @@ public class FrontView extends JFrame implements IView {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel labelIcon;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public String getSearchContent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

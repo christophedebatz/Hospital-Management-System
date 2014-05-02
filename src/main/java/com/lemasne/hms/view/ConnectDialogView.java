@@ -3,6 +3,7 @@ package com.lemasne.hms.view;
 import com.lemasne.hms.interfaces.IView;
 import java.awt.event.ActionListener;
 import javax.swing.JTable;
+import javax.swing.event.DocumentListener;
 
 public class ConnectDialogView extends javax.swing.JDialog implements IView {
     
@@ -168,6 +169,16 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
 
     @Override
     public JTable getTable() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void addSearchBoxListener(DocumentListener listener) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getSearchContent() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
