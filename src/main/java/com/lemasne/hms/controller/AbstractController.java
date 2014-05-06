@@ -52,8 +52,9 @@ abstract class AbstractController<T> implements IController, DocumentListener {
     }
 
     @Override
-    public void setControllerDto(ControllerDTO controllerDTO) {
+    public IController setControllerDto(ControllerDTO controllerDTO) {
         this.dto = controllerDTO;
+        return this;
     }
 
     @Override
@@ -79,5 +80,12 @@ abstract class AbstractController<T> implements IController, DocumentListener {
     @Override
     public void removeUpdate(DocumentEvent e) {
         this.changedUpdate(e);
+    }
+    
+    @Override
+    public void executeDTORequest() {
+        if (this.dto != null) {
+            
+        }
     }
 }

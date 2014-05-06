@@ -127,7 +127,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
         switch (event.getActionCommand()) {
             case "connect":
                 ConnectDialogView connectDialogView = new ConnectDialogView(this.view, true);
-                this.connectDialogCtrl = new ConnectDialogController(connectDialogView);
+                this.connectDialogCtrl = new ConnectDialogController(connectDialogView, this);
             break;
             case "close":
                 this.view.dispose();
@@ -186,7 +186,21 @@ public class FrontController implements IController, ActionListener, ChangeListe
     }
 
     @Override
-    public void setControllerDto(ControllerDTO controllerDTO) {
+    public IController setControllerDto(ControllerDTO controllerDTO) {
         this.dto = controllerDTO;
+        return this;
+    }
+
+    @Override
+    public void executeDTORequest() {
+        if (this.dto != null) {
+            switch (this.dto.getCtrlRequest()) {
+                case "launch_connexion":
+                    System.out.println("ok");
+                    this.currentCtrl = this.chambreCtrl;
+                    this.loadTable();
+                break;
+            }
+        }
     }
 }

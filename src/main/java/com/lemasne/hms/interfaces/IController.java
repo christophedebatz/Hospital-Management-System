@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 
 public interface IController {
     public void actionPerformed(ActionEvent event);
-    public void setControllerDto(ControllerDTO controllerDTO);
-
+    public IController setControllerDto(ControllerDTO controllerDTO);
+    public void executeDTORequest();
     public void loadTable();
 }

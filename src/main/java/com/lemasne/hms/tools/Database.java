@@ -1,7 +1,8 @@
 package com.lemasne.hms.tools;
 
-import java.sql.DriverManager;
+import com.lemasne.hms.settings.Config;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +31,12 @@ public class Database {
     private Connection buildConnection() {
 
         Connection conn = null;
+        Config config = Config.getInstance();
+        
+        String connString = "jdbc:mysql://" 
+                + config.get("serverAddress") 
+                + ":" + config.get("serverPort") 
+                + "/" + config.get("serverDbName");
         
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -39,7 +46,11 @@ public class Database {
         }
 
         try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/hms", "root", "admin");
+            conn = DriverManager.getConnection(
+                    connString, 
+                    config.get("serverUser"), 
+                    config.get("serverPassword")
+            );
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Could not connect to the database server.");

@@ -2,6 +2,7 @@ package com.lemasne.hms.view;
 
 import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.settings.Constants;
+import com.lemasne.hms.tools.Database;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
@@ -12,43 +13,47 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentListener;
 
 public class FrontView extends JFrame implements IView {
-    
+
     private HMSGlobalDisplay globalDisplay;
-    
+
     public FrontView(List<Component> tabViews, ChangeListener tabListener, boolean connectAtStartup) {
         this.initComponents();
         this.setLocationRelativeTo(null);
         this.homeTab.addChangeListener(tabListener);
 
-        if (connectAtStartup) {
+        if (connectAtStartup && Database.getInstance().getConnection() != null) {
+            if (this.homeTab.getTabCount() > 0) {
+                this.homeTab.removeAll();
+            }
             for (Component view : tabViews) {
                 this.homeTab.add(view.getName().toUpperCase(), view);
             }
         } else {
             this.globalDisplay = new HMSGlobalDisplay(
-                    "Veuillez vous connecter à la base de données pour continuer...",
-                    "Se connecter"
-                );
-            
+                "Veuillez vous connecter à la base de données pour continuer...",
+                "Se connecter"
+            );
+
             this.homeTab.addTab("HMS Service", this.globalDisplay);
         }
     }
-    
+
     public void setItemListener(ItemListener listener) {
         this.checkboxActivateJoins.addItemListener(listener);
     }
-    
+
     @Override
     public void setActionListener(ActionListener listener) {
         this.closeMenuItem.addActionListener(listener);
         this.closeMenuItem.setActionCommand("close");
         this.connexionMenuItem.addActionListener(listener);
         this.connexionMenuItem.setActionCommand("connect");
-        this.globalDisplay.setActionListener(listener);
+
+        if (this.globalDisplay != null) {
+            this.globalDisplay.setActionListener(listener);
+        }
     }
-    
-    
-     
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -138,7 +143,7 @@ public class FrontView extends JFrame implements IView {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem checkboxActivateJoins;
     private javax.swing.JMenuItem closeMenuItem;
@@ -156,12 +161,12 @@ public class FrontView extends JFrame implements IView {
     public String getSearchContent() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public JTable getTable() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
     @Override
     public void addSearchBoxListener(DocumentListener listener) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
