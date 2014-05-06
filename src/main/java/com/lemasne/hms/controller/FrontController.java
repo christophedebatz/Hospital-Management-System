@@ -12,6 +12,7 @@ import com.lemasne.hms.model.ServiceModel;
 import com.lemasne.hms.model.SoigneModel;
 import com.lemasne.hms.settings.Config;
 import com.lemasne.hms.settings.Constants;
+import com.lemasne.hms.tools.Database;
 import com.lemasne.hms.tools.TemplateLoader;
 import com.lemasne.hms.view.ConnectDialogView;
 import com.lemasne.hms.view.FrontView;
@@ -52,7 +53,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
     private IController soigneCtrl;
 
     
-    public FrontController() 
+    public FrontController(boolean forceConnect) 
     {
         this.initChambre();
         this.initService();
@@ -62,9 +63,9 @@ public class FrontController implements IController, ActionListener, ChangeListe
         this.initHospitalisation();
         this.initSoigne();
         
-        this.initFront();
+        this.initFront(forceConnect);
     }
-    
+  
     private void initChambre() {
         this.chambreView = new TabView(Constants.CHAMBRE);
         this.chambreCtrl = new ChambreController(new ChambreModel(), this.chambreView);
@@ -100,8 +101,8 @@ public class FrontController implements IController, ActionListener, ChangeListe
         this.soigneView = new TabView(Constants.SOIGNE);
         this.soigneCtrl = new SoigneController(new SoigneModel(), this.soigneView);
     }
-    
-    private void initFront() {
+        
+    private void initFront(boolean forceConnect) {
         List<Component> views = new ArrayList<>();
         views.add((Component) this.chambreView);
         views.add((Component) this.serviceView);
@@ -111,7 +112,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
         views.add((Component) this.hospitalisationView);
         views.add((Component) this.soigneView);
         
-        this.view = new FrontView(views, this, Config.getInstance().get("connectAtStartup").equals("true"));
+        this.view = new FrontView(views, this, Config.getInstance().get("connectAtStartup").equals("true") || forceConnect);
         this.view.setVisible(true);
         this.view.setItemListener(this);
         this.view.setActionListener(this);
@@ -196,9 +197,9 @@ public class FrontController implements IController, ActionListener, ChangeListe
         if (this.dto != null) {
             switch (this.dto.getCtrlRequest()) {
                 case "launch_connexion":
-                    System.out.println("ok");
-                    this.currentCtrl = this.chambreCtrl;
-                    this.loadTable();
+                    
+                    this.view.dispose();
+                    new FrontController(true);
                 break;
             }
         }

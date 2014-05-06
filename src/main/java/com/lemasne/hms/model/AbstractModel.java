@@ -60,7 +60,6 @@ abstract class AbstractModel<T> implements IModel {
                     rowData[i] = data.getObject(i + 1);
                 }
                 model.addRow(rowData);
-                System.out.println(rowData[0]);
                 isEmpty = false;
             }
 

@@ -5,6 +5,7 @@ public class ControllerDTO {
     
     private boolean enableJoins;
     private String ctrlRequest;
+    private Object ctrlObject;
 
     public ControllerDTO(boolean enableJoins) {
         this.enableJoins = enableJoins;
@@ -19,6 +20,14 @@ public class ControllerDTO {
         this.ctrlRequest = null;
     }
 
+    public Object getCtrlObject() {
+        return ctrlObject;
+    }
+
+    public void setCtrlObject(Object ctrlObject) {
+        this.ctrlObject = ctrlObject;
+    }
+    
     public String getCtrlRequest() {
         return ctrlRequest;
     }

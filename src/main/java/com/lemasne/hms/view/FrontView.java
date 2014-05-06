@@ -12,29 +12,44 @@ import javax.swing.JTable;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentListener;
 
-public class FrontView extends JFrame implements IView {
+public final class FrontView extends JFrame implements IView {
 
     private HMSGlobalDisplay globalDisplay;
 
-    public FrontView(List<Component> tabViews, ChangeListener tabListener, boolean connectAtStartup) {
+    public FrontView(List<Component> tabViews, ChangeListener tabListener, boolean forceConnect) {
         this.initComponents();
+        this.setVisible(true);
         this.setLocationRelativeTo(null);
+        this.refreshTabsArea(tabViews, tabListener, forceConnect);
+    }
+
+    private void buildGlobalView() {
+        this.globalDisplay = new HMSGlobalDisplay(
+                "Veuillez vous connecter à la base de données pour continuer...",
+                "Se connecter"
+        );
+
+        this.homeTab.addTab("HMS Service", this.globalDisplay);
+    }
+
+    public void refreshTabsArea(List<Component> tabViews, ChangeListener tabListener, boolean forceConnect) {
         this.homeTab.addChangeListener(tabListener);
 
-        if (connectAtStartup && Database.getInstance().getConnection() != null) {
-            if (this.homeTab.getTabCount() > 0) {
-                this.homeTab.removeAll();
+        if (this.homeTab.getTabCount() > 0) {
+            this.homeTab.removeAll();
+        }
+
+        if (Database.getInstance().getConnection() == null) {
+            this.buildGlobalView();
+        } else {
+            if (!forceConnect) {
+                this.buildGlobalView();
+                return;
             }
+
             for (Component view : tabViews) {
                 this.homeTab.add(view.getName().toUpperCase(), view);
             }
-        } else {
-            this.globalDisplay = new HMSGlobalDisplay(
-                "Veuillez vous connecter à la base de données pour continuer...",
-                "Se connecter"
-            );
-
-            this.homeTab.addTab("HMS Service", this.globalDisplay);
         }
     }
 
@@ -50,6 +65,7 @@ public class FrontView extends JFrame implements IView {
         this.connexionMenuItem.setActionCommand("connect");
 
         if (this.globalDisplay != null) {
+            System.err.println("ok");
             this.globalDisplay.setActionListener(listener);
         }
     }
@@ -142,7 +158,6 @@ public class FrontView extends JFrame implements IView {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem checkboxActivateJoins;

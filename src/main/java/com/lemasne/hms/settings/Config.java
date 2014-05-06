@@ -1,14 +1,14 @@
 package com.lemasne.hms.settings;
 
-import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Iterator;
+import java.net.URISyntaxException;
 import java.util.Properties;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-@XmlRootElement
 public class Config {
 
     private final Properties settings;
@@ -16,10 +16,6 @@ public class Config {
 
     private Config() {
         this.settings = this.loadConfigProperties(Constants.CONFIG_FILE);
-        
-        for (Object s : settings.keySet()) {
-            System.out.println(s);
-        }
     }
 
     public synchronized static Config getInstance() {
@@ -35,22 +31,35 @@ public class Config {
         }
         return null;
     }
-
-//    private void display(InputStream is) throws IOException {
-//        try (BufferedReader in = new BufferedReader(new InputStreamReader(is))) {
-//            String inputLine;
-//            while ((inputLine = in.readLine()) != null) {
-//                System.out.println(inputLine);
-//            }
-//        }
-//    }
+    
+    public boolean set(String name, String value) {
+        if (this.settings.containsKey(name)) {
+            this.settings.setProperty(name, value);
+            return true;
+        }
+        return false;
+    }
+    
+    public static boolean save(Config config) {
+        try {
+            config.settings.store(
+                new FileOutputStream(
+                    new File(Config.class.getResource(Constants.CONFIG_FILE).toURI()
+                )
+            ), null);
+            
+            return true;
+        } catch (IOException | URISyntaxException ex) {
+            Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 
     private Properties loadConfigProperties(String fileName) {
         Properties props = new Properties();
 
         try {
             InputStream input = Config.class.getResourceAsStream(fileName);
-//            this.display(input);
             if (input == null) {
                 throw new IOException("Cannot find the file " + fileName);
             }

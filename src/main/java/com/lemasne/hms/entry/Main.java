@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] argv) {
 
         TemplateLoader.load("Nimbus");
-        new FrontController();
+        new FrontController(false);
         
     }
 }

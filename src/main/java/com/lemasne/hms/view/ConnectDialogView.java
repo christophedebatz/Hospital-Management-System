@@ -29,6 +29,21 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
         this.connectAtStartup.setSelected(config.get("connectAtStartup").equals("true"));
         this.toggleSSHSettings(config.get("sshEnabled").equals("true"));
     }
+    
+    
+    public Config fillConfig() {
+        Config config = Config.getInstance();
+        config.set("serverAddress", this.serverAddress.getText());
+        config.set("serverPort", this.serverPort.getText());
+        config.set("serverDbName", this.serverDbName.getText());
+        config.set("serverUser", this.serverUser.getText());
+        config.set("serverPassword", this.serverPassword.getText());
+        config.set("sshPassword", this.sshPassword.getText());
+        config.set("sshUser", this.sshUser.getText());
+        config.set("sshEnabled", String.valueOf(this.useSSH.isSelected()));
+        config.set("connectAtStartup", String.valueOf(this.connectAtStartup.isSelected()));
+        return config;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -92,7 +107,7 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
         close.setText("ANNULER");
 
         useSSH.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        useSSH.setText("SSH");
+        useSSH.setText("Se connecter via tunnel SSH");
 
         sshPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Paramètres SSH", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         sshPanel.setVisible(false);
@@ -118,7 +133,7 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(sshPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(sshUser, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                    .addComponent(sshUser, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                     .addComponent(sshPassword))
                 .addContainerGap())
         );
@@ -159,11 +174,7 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(connectAtStartup)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(useSSH)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(close)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(storeDatabaseParameters, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -192,9 +203,14 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
                                     .addComponent(jLabel4))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(serverUser, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(serverUser, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                                     .addComponent(serverPassword))))
-                        .addGap(25, 25, 25))))
+                        .addGap(25, 25, 25))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(connectAtStartup)
+                            .addComponent(useSSH))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,9 +227,9 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(serverDbName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(serverUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -223,16 +239,17 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
                     .addComponent(serverPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(connectAtStartup)
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(useSSH)
+                .addGap(18, 18, 18)
                 .addComponent(sshPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(storeDatabaseParameters)
-                    .addComponent(close)
-                    .addComponent(useSSH))
-                .addGap(15, 15, 15))
+                    .addComponent(close))
+                .addContainerGap())
         );
 
         pack();
@@ -273,8 +290,8 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
     }
 
     public void toggleSSHSettings(boolean forceVisibility) {
-        int sizeDiff = this.sshPanel.isVisible() || !forceVisibility ? -this.sshPanel.getSize().height : this.sshPanel.getSize().height;
-        this.sshPanel.setVisible(!this.sshPanel.isVisible() || forceVisibility);
+        int sizeDiff = !forceVisibility ? -this.sshPanel.getSize().height : this.sshPanel.getSize().height;
+        this.sshPanel.setVisible(forceVisibility);
         this.setSize(this.getSize().width, this.getSize().height + sizeDiff);
         this.pack();
     }
