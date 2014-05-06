@@ -60,7 +60,6 @@ public class TabView extends javax.swing.JPanel implements IView {
         addButton.setText("AJOUTER");
 
         resultsList.setAutoCreateRowSorter(true);
-        resultsList.setCellSelectionEnabled(true);
         resultsList.setName("resultsList"); // NOI18N
         jScrollPane.setViewportView(resultsList);
 

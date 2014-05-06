@@ -13,15 +13,25 @@ import javax.swing.event.DocumentListener;
 
 public class FrontView extends JFrame implements IView {
     
-    public FrontView(List<Component> tabViews, ChangeListener tabListener) {
+    private HMSGlobalDisplay globalDisplay;
+    
+    public FrontView(List<Component> tabViews, ChangeListener tabListener, boolean connectAtStartup) {
         this.initComponents();
         this.setLocationRelativeTo(null);
-
-        for (Component view : tabViews) {
-            this.homeTab.add(view.getName().toUpperCase(), view);
-        }
-        
         this.homeTab.addChangeListener(tabListener);
+
+        if (connectAtStartup) {
+            for (Component view : tabViews) {
+                this.homeTab.add(view.getName().toUpperCase(), view);
+            }
+        } else {
+            this.globalDisplay = new HMSGlobalDisplay(
+                    "Veuillez vous connecter à la base de données pour continuer...",
+                    "Se connecter"
+                );
+            
+            this.homeTab.addTab("HMS Service", this.globalDisplay);
+        }
     }
     
     public void setItemListener(ItemListener listener) {
@@ -34,17 +44,10 @@ public class FrontView extends JFrame implements IView {
         this.closeMenuItem.setActionCommand("close");
         this.connexionMenuItem.addActionListener(listener);
         this.connexionMenuItem.setActionCommand("connect");
+        this.globalDisplay.setActionListener(listener);
     }
     
-    @Override
-    public JTable getTable() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
     
-    @Override
-    public void addSearchBoxListener(DocumentListener listener) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
      
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -151,6 +154,16 @@ public class FrontView extends JFrame implements IView {
 
     @Override
     public String getSearchContent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public JTable getTable() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    @Override
+    public void addSearchBoxListener(DocumentListener listener) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

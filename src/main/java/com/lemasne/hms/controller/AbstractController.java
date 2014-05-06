@@ -47,6 +47,7 @@ abstract class AbstractController<T> implements IController, DocumentListener {
         this.sorter.setModel(modelToLoad);
         this.view.getTable().setModel(modelToLoad);
         this.view.getTable().setRowSorter(this.sorter);
+        
         Helpers.updateRowHeights(this.view.getTable());
     }
 
@@ -62,7 +63,8 @@ abstract class AbstractController<T> implements IController, DocumentListener {
         } else {
             try {
                 sorter.setRowFilter(
-                        RowFilter.regexFilter(this.view.getSearchContent()));
+                        RowFilter.regexFilter("(?i)" + this.view.getSearchContent())
+                );
             } catch (PatternSyntaxException pse) {
                 System.err.println("Bad regex pattern");
             }

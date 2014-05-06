@@ -93,7 +93,6 @@
             <Component class="javax.swing.JTable" name="resultsList">
               <Properties>
                 <Property name="autoCreateRowSorter" type="boolean" value="true"/>
-                <Property name="cellSelectionEnabled" type="boolean" value="true"/>
                 <Property name="name" type="java.lang.String" value="resultsList" noResource="true"/>
               </Properties>
             </Component>

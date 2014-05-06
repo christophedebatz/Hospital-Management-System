@@ -10,6 +10,7 @@ import com.lemasne.hms.model.InfirmierModel;
 import com.lemasne.hms.model.MaladeModel;
 import com.lemasne.hms.model.ServiceModel;
 import com.lemasne.hms.model.SoigneModel;
+import com.lemasne.hms.settings.Config;
 import com.lemasne.hms.settings.Constants;
 import com.lemasne.hms.tools.TemplateLoader;
 import com.lemasne.hms.view.ConnectDialogView;
@@ -31,7 +32,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
 
     private ControllerDTO dto;
     private FrontView view;
-    private IController connectDialogCtrl;
+    private ConnectDialogController connectDialogCtrl;
     
     private IView chambreView;
     private IView serviceView;
@@ -110,7 +111,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
         views.add((Component) this.hospitalisationView);
         views.add((Component) this.soigneView);
         
-        this.view = new FrontView(views, this);
+        this.view = new FrontView(views, this, Config.getInstance().get("connectAtStartup").equals("true"));
         this.view.setVisible(true);
         this.view.setItemListener(this);
         this.view.setActionListener(this);
@@ -127,8 +128,6 @@ public class FrontController implements IController, ActionListener, ChangeListe
             case "connect":
                 ConnectDialogView connectDialogView = new ConnectDialogView(this.view, true);
                 this.connectDialogCtrl = new ConnectDialogController(connectDialogView);
-                connectDialogView.setLocationRelativeTo(this.view);
-                connectDialogView.setVisible(true);
             break;
             case "close":
                 this.view.dispose();
