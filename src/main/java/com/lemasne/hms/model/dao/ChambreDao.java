@@ -46,7 +46,8 @@ public class ChambreDao extends AbstractDao<Chambre> {
         ResultSet result = null;
         try {
             result = this.dbc.prepareStatement(
-                    "select max(no_chambre) as vMax from " + this.entityClass.getSimpleName()
+                        QueryBuilder.select("max(no_chambre) as vMax")
+                            .from(entityClass).toSQL()
             ).executeQuery();
 
             if (result.next()) { // simple scalar result
@@ -66,10 +67,10 @@ public class ChambreDao extends AbstractDao<Chambre> {
         try {
             result = this.dbc.prepareStatement(
                     QueryBuilder.select("code, nom, batiment, directeur")
-                    .distinct()
-                    .from(entityClass)
-                    .leftJoin(Service.class)
-                    .on("code_service", "code").toSQL()
+                        .distinct()
+                        .from(entityClass)
+                        .leftJoin(Service.class)
+                            .on("code_service", "code").toSQL()
             ).executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(ChambreDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -85,13 +86,13 @@ public class ChambreDao extends AbstractDao<Chambre> {
         try {
             result = this.dbc.prepareStatement(
                     QueryBuilder.select("Employe.numero as numero, nom, prenom, tel, adresse")
-                    .distinct()
-                    .from(entityClass)
-                    .leftJoin(Employe.class)
-                    .on("surveillant", "Employe.numero")
-                    .leftJoin(Infirmier.class)
-                    .on("surveillant", "Infirmier.numero")
-                    .where("Infirmier.code_service", service.getCode()).toSQL()
+                        .distinct()
+                        .from(entityClass)
+                        .leftJoin(Employe.class)
+                            .on("surveillant", "Employe.numero")
+                        .leftJoin(Infirmier.class)
+                            .on("surveillant", "Infirmier.numero")
+                        .where("Infirmier.code_service", service.getCode()).toSQL()
             ).executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(ChambreDao.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,9 +111,9 @@ public class ChambreDao extends AbstractDao<Chambre> {
                     QueryBuilder.select("no_chambre", "nb_lits", "batiment", "Service.nom as nom_service", "prenom as prenom_surveillant", "Employe.nom as nom_surveillant")
                     .from(entityClass)
                     .leftJoin(Service.class)
-                    .on("code_service", "code")
+                        .on("code_service", "code")
                     .leftJoin(Employe.class)
-                    .on("surveillant", "numero").toSQL()
+                        .on("surveillant", "numero").toSQL()
             ).executeQuery();
         } catch (SQLException ex) {
             Logger.getLogger(ChambreDao.class.getName()).log(Level.SEVERE, null, ex);

@@ -74,7 +74,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
     
     private void initService() {
         this.serviceView = new TabView(Constants.SERVICE);
-        this.serviceCtrl = new ServiceController(new ServiceModel(), this.serviceView);
+        this.serviceCtrl = new ServiceController(new ServiceModel(), this.serviceView, this.view);
     }
     
     private void initInfirmier() {

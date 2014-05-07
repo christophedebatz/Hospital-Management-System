@@ -2,11 +2,9 @@ package com.lemasne.hms.model;
 
 import com.lemasne.hms.model.dao.ChambreDao;
 import com.lemasne.hms.model.dao.EmployeDao;
-import com.lemasne.hms.model.dao.InfirmierDao;
 import com.lemasne.hms.model.dao.ServiceDao;
 import com.lemasne.hms.model.entities.Chambre;
 import com.lemasne.hms.model.entities.Employe;
-import com.lemasne.hms.model.entities.Infirmier;
 import com.lemasne.hms.model.entities.Service;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
