@@ -12,7 +12,6 @@ import com.lemasne.hms.model.ServiceModel;
 import com.lemasne.hms.model.SoigneModel;
 import com.lemasne.hms.settings.Config;
 import com.lemasne.hms.settings.Constants;
-import com.lemasne.hms.tools.Database;
 import com.lemasne.hms.tools.TemplateLoader;
 import com.lemasne.hms.view.ConnectDialogView;
 import com.lemasne.hms.view.FrontView;
@@ -29,8 +28,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 
-public class FrontController implements IController, ActionListener, ChangeListener,  ItemListener {
-
+public class FrontController implements IController, ActionListener, ChangeListener, ItemListener {
+    
+    private final String name = null;
     private ControllerDTO dto;
     private FrontView view;
     private ConnectDialogController connectDialogCtrl;
@@ -133,7 +133,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
             case "close":
                 this.view.dispose();
                 System.exit(0);
-                break;
+            break;
             default:
                 System.out.println("Other action...");
             break;
@@ -197,11 +197,15 @@ public class FrontController implements IController, ActionListener, ChangeListe
         if (this.dto != null) {
             switch (this.dto.getCtrlRequest()) {
                 case "launch_connexion":
-                    
                     this.view.dispose();
                     new FrontController(true);
                 break;
             }
         }
+    }
+
+    @Override
+    public String getName() {
+        return this.name;
     }
 }

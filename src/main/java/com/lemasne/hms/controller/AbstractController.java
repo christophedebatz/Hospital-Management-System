@@ -19,8 +19,10 @@ abstract class AbstractController<T> implements IController, DocumentListener {
     protected ControllerDTO dto;
     protected IModel model;
     protected IView view;
+    protected String name;
 
     protected AbstractController(Class entityClass, IModel model, IView view) {
+        this.name = entityClass.getSimpleName().toLowerCase();
         this.entityClass = entityClass;
 
         if (model == null || view == null) {
@@ -50,7 +52,7 @@ abstract class AbstractController<T> implements IController, DocumentListener {
         
         Helpers.updateRowHeights(this.view.getTable());
     }
-
+    
     @Override
     public IController setControllerDto(ControllerDTO controllerDTO) {
         this.dto = controllerDTO;
@@ -80,6 +82,11 @@ abstract class AbstractController<T> implements IController, DocumentListener {
     @Override
     public void removeUpdate(DocumentEvent e) {
         this.changedUpdate(e);
+    }
+    
+    @Override
+    public String getName() {
+        return this.name;
     }
     
     @Override

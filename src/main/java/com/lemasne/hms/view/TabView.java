@@ -32,6 +32,8 @@ public class TabView extends javax.swing.JPanel implements IView {
     }
     
     public void setActionListener(ActionListener listener) {
+        this.addButton.setActionCommand("add");
+        this.addButton.addActionListener(listener);
     }
     
     private void addComponentBehaviors() {

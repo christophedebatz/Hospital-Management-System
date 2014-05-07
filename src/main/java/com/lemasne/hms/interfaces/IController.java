@@ -8,4 +8,5 @@ public interface IController {
     public IController setControllerDto(ControllerDTO controllerDTO);
     public void executeDTORequest();
     public void loadTable();
+    public String getName();
 }

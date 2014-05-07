@@ -24,5 +24,5 @@ public class SoigneController extends AbstractController<Soigne> implements Acti
                 System.out.println("Other action...");
                 break;
         }
-    }
+    }    
 }
