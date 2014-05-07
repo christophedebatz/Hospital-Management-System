@@ -30,7 +30,7 @@ public class InfirmierDao extends AbstractDao<Infirmier> {
                         result.getInt("numero"),
                         result.getString("code_service"),
                         result.getString("rotation"),
-                        result.getFloat("lit")
+                        result.getFloat("salaire")
                 ));
             }
         } catch (SQLException ex) {

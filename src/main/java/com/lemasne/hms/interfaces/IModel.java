@@ -9,4 +9,5 @@ public interface IModel {
     public TableModel getCustomizeTableModel();
     public DefaultTableModel getJoinedTableModel();
     public DefaultComboBoxModel getComboBoxModel();
+    public IDao getDao ();
 }

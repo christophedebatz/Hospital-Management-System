@@ -12,4 +12,5 @@ public interface IDao<T> {
     public int removeById(Object... keysValues);
     public boolean updateFromId(Map<String, Object> entityParams, Object... columnsKeysValues);
     public List<T> getListWith(ResultSet result);
+    public boolean insert(List<String> values);
 }

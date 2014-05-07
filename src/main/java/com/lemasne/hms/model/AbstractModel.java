@@ -2,7 +2,6 @@ package com.lemasne.hms.model;
 
 import com.lemasne.hms.interfaces.IDao;
 import com.lemasne.hms.interfaces.IModel;
-import com.lemasne.hms.model.entities.Chambre;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -21,6 +20,11 @@ abstract class AbstractModel<T> implements IModel {
     public AbstractModel(Class entityType, IDao dao) {
         this.entityType = entityType;
         this.dao = dao;
+    }
+    
+    @Override
+    public IDao getDao () {
+        return this.dao;
     }
     
     @Override

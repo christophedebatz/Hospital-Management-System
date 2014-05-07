@@ -2,9 +2,11 @@ package com.lemasne.hms.model;
 
 import com.lemasne.hms.model.dao.ChambreDao;
 import com.lemasne.hms.model.dao.EmployeDao;
+import com.lemasne.hms.model.dao.InfirmierDao;
 import com.lemasne.hms.model.dao.ServiceDao;
 import com.lemasne.hms.model.entities.Chambre;
 import com.lemasne.hms.model.entities.Employe;
+import com.lemasne.hms.model.entities.Infirmier;
 import com.lemasne.hms.model.entities.Service;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -19,7 +21,8 @@ public class ChambreModel extends AbstractModel<Chambre> {
     public DefaultComboBoxModel getChambreServicesComboBoxModel() {
         if (this.dao != null) {
             DefaultComboBoxModel model = new DefaultComboBoxModel();
-            List<Service> services = (new ServiceDao()).getListWith(((ChambreDao)this.dao).findServicesNames());
+            ServiceDao sDao = new ServiceDao();
+            List<Service> services = sDao.getListWith(sDao.findAll());
             for (Service s : services) {
                 model.addElement((Service) s);
             }
@@ -28,12 +31,12 @@ public class ChambreModel extends AbstractModel<Chambre> {
         return null;
     }
     
-    public DefaultComboBoxModel getChambreEmployesComboBoxModel() {
-        if (this.dao != null) {
+    public DefaultComboBoxModel getChambreInfirmiersComboBoxModel(Service service) {
+        if (this.dao != null && service != null) {
             DefaultComboBoxModel model = new DefaultComboBoxModel();
-            List<Employe> employes = (new EmployeDao()).getListWith(((ChambreDao)this.dao).findEmployesNames());
+            List<Employe> employes = (new EmployeDao()).getListWith(((ChambreDao)this.dao).findInfirmiersNames(service));
             for (Employe s : employes) {
-                model.addElement((Employe) s);
+                model.addElement(s);
             }
             return model;
         }

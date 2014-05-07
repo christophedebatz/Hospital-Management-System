@@ -8,15 +8,16 @@ import java.util.Map;
 public class QueryBuilder {
 
     private enum QueryActionType {
-
         SELECT,
         UPDATE,
-        DELETE
-    }
+        DELETE,
+        INSERT
+    };
 
     private String tableName;
     private QueryActionType actionType;
     private List<String> fields;
+    private boolean isDistinct = false;
     private Map<String, Object> whereClauses;
     private Map<String, Object> updateClauses;
     private Map<String, Map<String, String>> joinClauses;
@@ -47,6 +48,22 @@ public class QueryBuilder {
         );
     }
 
+    public QueryBuilder distinct() {
+        this.isDistinct = true;
+        return this;
+    }
+    
+    public static QueryBuilder insertInto(Class entityType) {
+        QueryBuilder builder = new QueryBuilder(QueryActionType.INSERT);
+        builder.tableName = entityType.getSimpleName();
+        return builder;
+    }
+    
+    public QueryBuilder values(List<String> fieldsValues) {
+        this.fields = fieldsValues;
+        return this;
+    }
+    
     public static QueryBuilder delete() {
         return new QueryBuilder(QueryActionType.DELETE);
     }
@@ -114,13 +131,17 @@ public class QueryBuilder {
 
         if (this.actionType == QueryActionType.SELECT) {
             sb.append("select ");
+            
+            if (this.isDistinct) {
+                sb.append("distinct ");
+            }
+            
             int i = 0;
             for (String field : this.fields) {
                 sb.append(field);
-                if (i < this.fields.size() - 1) {
+                if (++i < this.fields.size()) {
                     sb.append(", ");
                 }
-                i++;
             }
             sb.append(" from  ").append(this.tableName);
             
@@ -131,10 +152,9 @@ public class QueryBuilder {
                     sb.append(" on ");
                     for (Map.Entry<String, String> onEntry : joinClause.getValue().entrySet()) {
                         sb.append(onEntry.getKey()).append(" = ").append(onEntry.getValue());
-                        if (i < joinClause.getValue().size() - 1) {
+                        if (++i < joinClause.getValue().size()) {
                             sb.append(", ");
                         }
-                        i++;
                     }
                 }
             }
@@ -144,11 +164,11 @@ public class QueryBuilder {
             sb.append("delete from ").append(this.tableName);
         }
         
-        else {
+        else if (this.actionType == QueryActionType.UPDATE) {
             sb.append("update ").append(this.tableName).append(" set");
             String separator = "";
+            
             int i = 0;
-
             for (Map.Entry<String, Object> updateClause : this.updateClauses.entrySet()) {
                 if (!(updateClause.getValue() instanceof Integer) && !(updateClause.getValue() instanceof Long)) {
                     separator = "'";
@@ -156,13 +176,30 @@ public class QueryBuilder {
                 sb.append(" ").append(updateClause.getKey())
                         .append(" = ").append(separator).append(updateClause.getValue()).append(separator);
 
-                if (i < this.updateClauses.size()) {
+                if (++i < this.updateClauses.size()) {
                     sb.append(", ");
                 }
             }
+        } 
+        
+        else {
+            sb.append("insert into ");
+            sb.append(this.tableName);
+            sb.append(" values (");
+            
+            int i = 0;
+            for (String value : this.fields) {
+                sb.append("'").append(value).append("'");
+                
+                if (++i < this.fields.size()) {
+                    sb.append(", ");
+                }
+            }
+            
+            sb.append(")");
         }
 
-        if (this.whereClauses.size() > 0) {
+        if (this.whereClauses.size() > 0 && this.actionType != QueryActionType.INSERT) {
             String separator = "";
             sb.append(" where");
             int i = 0;
@@ -174,7 +211,7 @@ public class QueryBuilder {
                 sb.append(" ").append(whereClause.getKey())
                         .append(" = ").append(separator).append(whereClause.getValue()).append(separator);
 
-                if (i < this.whereClauses.size()) {
+                if (++i < this.whereClauses.size()) {
                     sb.append(", ");
                 }
             }
