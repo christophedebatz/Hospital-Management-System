@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-abstract class AbstractDao<T> implements IDao {
+abstract class AbstractDao<T> implements IDao<T> {
     
     protected final Class entityClass;
     protected final String[] keysNames;

@@ -2,7 +2,6 @@ package com.lemasne.hms.model.dao;
 
 import com.lemasne.hms.model.entities.Docteur;
 import com.lemasne.hms.model.entities.Employe;
-import com.lemasne.hms.model.entities.Service;
 import com.lemasne.hms.tools.QueryBuilder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,7 +17,7 @@ public class DocteurDao extends AbstractDao<Docteur> {
         super(Docteur.class, "numero");
     }
     
-    public static List<Docteur> getListWith(ResultSet result) {
+    public List<Docteur> getListWith(ResultSet result) {
         if (result == null) {
             throw new IllegalArgumentException("result cannot be null.");
         }

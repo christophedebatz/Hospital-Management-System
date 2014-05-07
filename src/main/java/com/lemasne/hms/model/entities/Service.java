@@ -2,12 +2,13 @@ package com.lemasne.hms.model.entities;
 
 public class Service {
     
-    private int code;
+    private String code;
     private String nom;
-    private char batiment;
+    private String batiment;
     private String directeur;
 
-    public Service(int code, String nom, char batiment, String directeur) {
+       
+    public Service(String code, String nom, String batiment, String directeur) {
         this.code = code;
         this.nom = nom;
         this.batiment = batiment;
@@ -15,11 +16,11 @@ public class Service {
     }
     
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 
@@ -31,11 +32,11 @@ public class Service {
         this.nom = nom;
     }
 
-    public char getBatiment() {
+    public String getBatiment() {
         return batiment;
     }
 
-    public void setBatiment(char batiment) {
+    public void setBatiment(String batiment) {
         this.batiment = batiment;
     }
 
@@ -47,5 +48,8 @@ public class Service {
         this.directeur = directeur;
     }
     
-    
+    @Override
+    public String toString() {
+        return this.nom;
+    }
 }

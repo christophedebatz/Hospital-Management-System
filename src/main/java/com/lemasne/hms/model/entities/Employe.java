@@ -58,5 +58,8 @@ public class Employe {
         this.adresse = adresse;
     }
     
-    
+    @Override
+    public String toString() {
+        return this.prenom + " " + this.nom.toUpperCase();
+    }
 }

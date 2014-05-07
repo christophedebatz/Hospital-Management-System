@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +18,7 @@ public class ServiceDao extends AbstractDao<Service> {
         super(Service.class, "code");
     }
     
-    public static List<Service> getListWith(ResultSet result) {
+    public List<Service> getListWith(ResultSet result) {
         if (result == null) {
             throw new IllegalArgumentException("result cannot be null.");
         }
@@ -26,9 +27,9 @@ public class ServiceDao extends AbstractDao<Service> {
         try {
             while (result.next()) {
                 services.add(new Service(
-                        result.getInt("code"),
+                        result.getString("code"),
                         result.getString("nom"),
-                        result.getString("batiment").charAt(0),
+                        result.getString("batiment"),
                         result.getString("directeur")
                 ));
             }
@@ -57,5 +58,10 @@ public class ServiceDao extends AbstractDao<Service> {
         }
 
         return result;
+    }
+
+    @Override
+    public boolean updateFromId(Map entityParams, Object... columnsKeysValues) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

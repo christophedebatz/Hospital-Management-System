@@ -2,11 +2,14 @@ package com.lemasne.hms.model;
 
 import com.lemasne.hms.interfaces.IDao;
 import com.lemasne.hms.interfaces.IModel;
+import com.lemasne.hms.model.entities.Chambre;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -19,12 +22,12 @@ abstract class AbstractModel<T> implements IModel {
         this.entityType = entityType;
         this.dao = dao;
     }
-
+    
     @Override
     public DefaultTableModel getTableModel() {
         return this.getTableModel(false);
     }
-
+    
     @Override
     public DefaultTableModel getJoinedTableModel() {
         return this.getTableModel(true);
@@ -33,6 +36,20 @@ abstract class AbstractModel<T> implements IModel {
     @Override
     public abstract TableModel getCustomizeTableModel();
 
+    @Override
+    public DefaultComboBoxModel getComboBoxModel() {
+        if (this.dao != null) {
+            DefaultComboBoxModel model = new DefaultComboBoxModel();
+            List<T> list = this.dao.getListWith(this.dao.findAll());
+            
+            for (T c : list) {
+                model.addElement((T) c);
+            }
+            return model;
+        }
+        return null;
+    }
+    
     protected DefaultTableModel getTableModel(boolean isJoined) {
         if (this.dao == null) {
             return null;

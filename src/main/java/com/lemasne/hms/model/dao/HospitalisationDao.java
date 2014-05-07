@@ -15,7 +15,7 @@ public class HospitalisationDao extends AbstractDao<Hospitalisation> {
         super(Hospitalisation.class, "no_malade");
     }
     
-    public static List<Hospitalisation> getListWith(ResultSet result) {
+    public List<Hospitalisation> getListWith(ResultSet result) {
         if (result == null) {
             throw new IllegalArgumentException("result cannot be null.");
         }

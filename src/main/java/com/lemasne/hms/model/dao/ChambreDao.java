@@ -17,7 +17,8 @@ public class ChambreDao extends AbstractDao<Chambre> {
         super(Chambre.class, "code_service", "no_chambre");
     }
 
-    public static List<Chambre> getListWith(ResultSet result) {
+    @Override
+    public List<Chambre> getListWith(ResultSet result) {
         if (result == null) {
             throw new IllegalArgumentException("result cannot be null.");
         }
@@ -40,6 +41,42 @@ public class ChambreDao extends AbstractDao<Chambre> {
         return chambres;
     }
 
+    public ResultSet findServicesNames() {
+        ResultSet result = null;
+        
+        try {
+            result = this.dbc.prepareStatement(
+                        QueryBuilder.select("code, nom, batiment, directeur")
+                        .from(entityClass)
+                        .leftJoin(Service.class)
+                        .on("code_service", "code").toSQL()
+                    ).executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChambreDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Could not execute query : " + ex.getMessage());
+        }
+        
+        return result;
+    }
+
+    public ResultSet findEmployesNames() {
+        ResultSet result = null;
+        
+        try {
+            result = this.dbc.prepareStatement(
+                        QueryBuilder.select("numero, nom, prenom, tel, adresse")
+                        .from(entityClass)
+                        .leftJoin(Employe.class)
+                        .on("surveillant", "numero").toSQL()
+                    ).executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChambreDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Could not execute query : " + ex.getMessage());
+        }
+        
+        return result;
+    }
+    
     @Override
     public ResultSet findAllWithJoins() {
         ResultSet result = null;

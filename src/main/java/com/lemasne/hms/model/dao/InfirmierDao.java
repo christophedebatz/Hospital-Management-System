@@ -18,7 +18,7 @@ public class InfirmierDao extends AbstractDao<Infirmier> {
         super(Infirmier.class, "numero");
     }
     
-    public static List<Infirmier> getListWith(ResultSet result) {
+    public List<Infirmier> getListWith(ResultSet result) {
         if (result == null) {
             throw new IllegalArgumentException("result cannot be null.");
         }

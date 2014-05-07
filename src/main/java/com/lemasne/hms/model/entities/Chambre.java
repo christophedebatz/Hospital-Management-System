@@ -48,6 +48,8 @@ public class Chambre {
         this.nb_lits = nb_lits;
     }
     
-    
-    
+    @Override
+    public String toString() {
+        return "Chambre #" + this.no_chambre;
+    }
 }

@@ -15,7 +15,7 @@ public class SoigneDao extends AbstractDao {
         super(Soigne.class, "no_docteur", "no_malade");
     }
     
-    public static List<Soigne> getListWith(ResultSet result) {
+    public List<Soigne> getListWith(ResultSet result) {
         if (result == null) {
             throw new IllegalArgumentException("result cannot be null.");
         }

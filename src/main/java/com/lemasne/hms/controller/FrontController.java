@@ -68,7 +68,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
   
     private void initChambre() {
         this.chambreView = new TabView(Constants.CHAMBRE);
-        this.chambreCtrl = new ChambreController(new ChambreModel(), this.chambreView);
+        this.chambreCtrl = new ChambreController(new ChambreModel(), this.chambreView, this.view);
         this.chambreCtrl.loadTable();
     }
     
