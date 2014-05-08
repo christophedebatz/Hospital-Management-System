@@ -5,10 +5,9 @@ import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.model.entities.Soigne;
 import com.lemasne.hms.tools.Helpers;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
-public class SoigneController extends AbstractController<Soigne> implements ActionListener {
+public class SoigneController extends AbstractController<Soigne> {
 
     public SoigneController(IModel model, IView view) {
         super(Soigne.class, model, view);

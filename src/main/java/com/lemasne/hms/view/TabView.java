@@ -49,7 +49,8 @@ public class TabView extends javax.swing.JPanel implements IView {
         this.addButton.addActionListener(listener);
         this.removeButton.setActionCommand("remove");
         this.removeButton.addActionListener(listener);
-        
+        this.updateButton.setActionCommand("update");
+        this.updateButton.addActionListener(listener);
     }
     
     @Override

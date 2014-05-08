@@ -9,13 +9,12 @@ import com.lemasne.hms.model.entities.Service;
 import com.lemasne.hms.tools.Helpers;
 import com.lemasne.hms.view.forms.ServiceFormView;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class ServiceController extends AbstractController<Service> implements ActionListener {
+public class ServiceController extends AbstractController<Service> {
 
     private final IView parent;
     private final ServiceFormView formView;

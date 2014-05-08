@@ -14,6 +14,5 @@ public interface IFormView {
     public void setVisible(boolean isVisible);
     public void dispose();
     public void setFormType(FormType formType);
-    public void setEntity(Object entity);
     public FormType getFormType();
 }

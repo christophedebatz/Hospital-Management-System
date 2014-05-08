@@ -1,7 +1,6 @@
 package com.lemasne.hms.view.forms;
 
 import com.lemasne.hms.interfaces.IFormView;
-import com.lemasne.hms.model.entities.Chambre;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
@@ -11,23 +10,18 @@ import javax.swing.JFrame;
 public class ServiceFormView extends JDialog implements IFormView {
 
     private FormType formType;
-    private Chambre entity;
+    private final String className = this.getClass().getSimpleName().replace("FormView", "");
     
     public ServiceFormView(JFrame parent, boolean modal) {
         super(parent, modal);
-        this.entity = null;
         this.setLocationRelativeTo(parent);     
         initComponents();
     }
     
     @Override
-    public void setEntity(Object entity) {
-        this.entity = (Chambre) entity;
-    }
-    
-    @Override
     public void setFormType(FormType formType) {
         this.formType = formType;
+        this.setTitle((this.formType == FormType.ADD_FEATURE ? "Ajouter" : "Modifier") + (" un(e) " + this.className).toLowerCase() );
     }
     
     public void dispose () {
@@ -68,10 +62,9 @@ public class ServiceFormView extends JDialog implements IFormView {
         cancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Service");
         setResizable(false);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Service", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 1, 15))); // NOI18N
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, this.className, javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 1, 15))); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Code :");

@@ -5,10 +5,9 @@ import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.model.entities.Hospitalisation;
 import com.lemasne.hms.tools.Helpers;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
-public class HospitalisationController extends AbstractController<Hospitalisation> implements ActionListener {
+public class HospitalisationController extends AbstractController<Hospitalisation> {
 
     public HospitalisationController(IModel model, IView view) {
         super(Hospitalisation.class, model, view);
