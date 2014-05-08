@@ -1,10 +1,12 @@
 package com.lemasne.hms.settings;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
+import java.net.URI;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,8 +15,10 @@ public class Config {
 
     private final Properties settings;
     private static Config instance = null;
+    private static URI propsFileUri = null;
 
     private Config() {
+        propsFileUri = new File(System.getProperty("user.home") + "\\" + Constants.CONFIG_FILE).toURI();
         this.settings = this.loadConfigProperties(Constants.CONFIG_FILE);
     }
 
@@ -31,7 +35,7 @@ public class Config {
         }
         return null;
     }
-    
+
     public boolean set(String name, String value) {
         if (this.settings.containsKey(name)) {
             this.settings.setProperty(name, value);
@@ -39,17 +43,20 @@ public class Config {
         }
         return false;
     }
-    
+
     public static boolean save(Config config) {
+        File propsFile = new File(propsFileUri);
+
         try {
-            config.settings.store(
-                new FileOutputStream(
-                    new File(Config.class.getResource(Constants.CONFIG_FILE).toURI()
-                )
-            ), null);
-            
+            if (!propsFile.isFile()) {
+                propsFile.createNewFile();
+                propsFile.setReadable(true);
+                propsFile.setWritable(true);
+            }
+
+            config.settings.store(new FileOutputStream(propsFile), null);
             return true;
-        } catch (IOException | URISyntaxException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
@@ -57,15 +64,29 @@ public class Config {
 
     private Properties loadConfigProperties(String fileName) {
         Properties props = new Properties();
+        InputStream input = null;
+        File propsFile = new File(propsFileUri);
 
-        try {
-            InputStream input = Config.class.getResourceAsStream(fileName);
-            if (input == null) {
-                throw new IOException("Cannot find the file " + fileName);
+        if (propsFile.isFile() && propsFile.canRead()) {
+            try {
+                input = new FileInputStream(propsFile.getAbsolutePath());
+                props.load(input);
+            } catch (FileNotFoundException ex) {
+                System.err.println(ex.getMessage());
+                Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Config.class.getName()).log(Level.SEVERE, null, ex);
             }
-            props.load(input);
-        } catch (IOException ex) {
-            System.err.println(ex.getMessage());
+        } else {
+            try {
+                input = Config.class.getResourceAsStream("/" + fileName);
+                if (input == null) {
+                    throw new IOException("Cannot find the file " + fileName);
+                }
+                props.load(input);
+            } catch (IOException ex) {
+                System.err.println(ex.getMessage());
+            }
         }
         return props;
     }

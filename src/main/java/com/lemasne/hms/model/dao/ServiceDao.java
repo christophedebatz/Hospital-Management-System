@@ -18,6 +18,7 @@ public class ServiceDao extends AbstractDao<Service> {
         super(Service.class, "code");
     }
     
+    @Override
     public List<Service> getListWith(ResultSet result) {
         if (result == null) {
             throw new IllegalArgumentException("result cannot be null.");

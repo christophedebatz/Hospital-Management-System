@@ -9,7 +9,7 @@ public class ServiceModel extends AbstractModel<Service> {
     public ServiceModel() {
         super(Service.class, new ServiceDao());
     }
-
+    
     @Override
     public TableModel getCustomizeTableModel() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

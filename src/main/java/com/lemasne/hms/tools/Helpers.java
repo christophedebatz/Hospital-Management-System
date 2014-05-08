@@ -1,6 +1,10 @@
 package com.lemasne.hms.tools;
 
+import com.lemasne.hms.interfaces.IController;
+import com.lemasne.hms.interfaces.IDao;
+import com.lemasne.hms.interfaces.IView;
 import java.awt.Component;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 public class Helpers {
@@ -19,6 +23,41 @@ public class Helpers {
             }
         } catch (ClassCastException e) {
             System.err.println("Dynamic resizer for table was not able to run.");
+        }
+    }
+
+    public static void removeFromDatabase(IView view, IController ctrl) {
+        int[] rowsToRemove = view.getTable().getSelectedRows();
+        if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(view.getParent(), "Confirmez-vous la suppression de ces " + rowsToRemove.length + " enregistrement(s) ?", "Suppression", JOptionPane.YES_NO_OPTION)) {
+            IDao dao = ctrl.getModel().getDao();
+            String[] values = new String[dao.getKeysNames().length * rowsToRemove.length];
+            int i = 0;
+
+            for (int selectedRow : rowsToRemove) { // browse rows to remove
+                for (String keyName : dao.getKeysNames()) { // browse keys of the current entity and match them
+                    values[i++] = String.valueOf(
+                        view.getTable().getModel().getValueAt(
+                            selectedRow,
+                            view.getTable().getColumn(keyName.toUpperCase().replaceAll("_", " ")).getModelIndex()
+                        )
+                    );
+                }
+            }
+
+            i = 0;
+            boolean isFirst = true;
+            String[] idValues = new String[dao.getKeysNames().length];
+            for (String v : values) {
+                if (!isFirst && i % dao.getKeysNames().length == 0) {
+                    i = 0;
+                    dao.removeById((Object[]) idValues);
+                }
+                idValues[i++] = v;
+                isFirst = false;
+            }
+            dao.removeById((Object[]) idValues);
+
+            ctrl.loadTable();
         }
     }
 }

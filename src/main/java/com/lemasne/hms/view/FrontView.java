@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JTable;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionListener;
 
 public final class FrontView extends JFrame implements IView {
 
@@ -184,6 +185,21 @@ public final class FrontView extends JFrame implements IView {
 
     @Override
     public void addSearchBoxListener(DocumentListener listener) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSelectionListener(ListSelectionListener listener) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setEnabledRemoving(boolean enabled) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setEnabledUpdating(boolean enabled) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -24,6 +24,11 @@ abstract class AbstractDao<T> implements IDao<T> {
     }
 
     @Override
+    public String[] getKeysNames() {
+        return this.keysNames;
+    }
+    
+    @Override
     public ResultSet findById(Object... keysValues) {
         ResultSet result = null;
 
@@ -84,6 +89,9 @@ abstract class AbstractDao<T> implements IDao<T> {
         } catch (SQLException ex) {
             Logger.getLogger(AbstractDao.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Could not execute query : " + ex.getMessage());
+            System.out.println(QueryBuilder.delete()
+                    .from(entityClass)
+                    .whereRange(keysNames, keysValues).toSQL());
             return 0;
         }
     }

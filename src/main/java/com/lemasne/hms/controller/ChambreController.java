@@ -1,5 +1,6 @@
 package com.lemasne.hms.controller;
 
+import com.lemasne.hms.interfaces.IDao;
 import com.lemasne.hms.interfaces.IFormView.FormType;
 import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.interfaces.IView;
@@ -8,6 +9,7 @@ import com.lemasne.hms.model.dao.ChambreDao;
 import com.lemasne.hms.model.entities.Chambre;
 import com.lemasne.hms.model.entities.Employe;
 import com.lemasne.hms.model.entities.Service;
+import com.lemasne.hms.tools.Helpers;
 import com.lemasne.hms.view.forms.ChambreFormView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,7 +30,6 @@ public class ChambreController extends AbstractController<Chambre> implements Ac
     public ChambreController(IModel model, IView view, IView parent) {
         super(Chambre.class, model, view);
         this.parent = parent;
-        this.view.setActionListener(this);
         
         this.formView = new ChambreFormView((JFrame)this.parent, true);
         this.formView.setActionListener(this);
@@ -65,6 +66,9 @@ public class ChambreController extends AbstractController<Chambre> implements Ac
                         JOptionPane.showMessageDialog((JFrame)this.parent, "Le numéro de la chambre est vide.");
                     }
                 }
+            break;
+            case "remove":
+                Helpers.removeFromDatabase(this.view, this);
             break;
             default:
                 this.formView.dispose();

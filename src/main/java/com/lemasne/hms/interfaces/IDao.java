@@ -6,6 +6,7 @@ import java.util.Map;
 
 
 public interface IDao<T> {
+    public String[] getKeysNames();
     public ResultSet findById(Object... keysValues);
     public ResultSet findAll();
     public ResultSet findAllWithJoins();

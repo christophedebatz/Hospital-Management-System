@@ -4,7 +4,7 @@ package com.lemasne.hms.settings;
 public class Constants {
     
     public final static String SOFTWARE_NAME = "Hospital Management System Bêta";
-    public final static String CONFIG_FILE = "/settings.properties";
+    public final static String CONFIG_FILE = "settings-hms.properties";
     
     public final static String CHAMBRE = "chambre";
     public final static String SERVICE = "service";

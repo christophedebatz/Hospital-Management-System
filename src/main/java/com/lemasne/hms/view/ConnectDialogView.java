@@ -1,10 +1,12 @@
 package com.lemasne.hms.view;
 
+
 import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.settings.Config;
 import java.awt.event.ActionListener;
 import javax.swing.JTable;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionListener;
 
 public class ConnectDialogView extends javax.swing.JDialog implements IView {
     
@@ -315,6 +317,21 @@ public class ConnectDialogView extends javax.swing.JDialog implements IView {
 
     @Override
     public String getSearchContent() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setSelectionListener(ListSelectionListener listener) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setEnabledRemoving(boolean enabled) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setEnabledUpdating(boolean enabled) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

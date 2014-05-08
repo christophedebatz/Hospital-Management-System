@@ -2,6 +2,7 @@ package com.lemasne.hms.controller;
 
 import com.lemasne.hms.controller.dto.ControllerDTO;
 import com.lemasne.hms.interfaces.IController;
+import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.model.ChambreModel;
 import com.lemasne.hms.model.DocteurModel;
@@ -207,5 +208,10 @@ public class FrontController implements IController, ActionListener, ChangeListe
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public IModel getModel() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

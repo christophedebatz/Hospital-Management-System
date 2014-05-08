@@ -27,6 +27,18 @@ public class EmployeModel extends AbstractModel<Employe> {
         return null;
     }
     
+    public DefaultComboBoxModel getDirecteursComboBoxModel() {
+        if (this.dao != null) {
+           DefaultComboBoxModel model = new DefaultComboBoxModel();
+            List<Employe> employes = this.dao.getListWith(this.dao.findAll());
+            for (Employe e : employes) {
+                model.addElement((Employe) e);
+            }
+            return model;
+        }
+        return null;
+    }
+    
     @Override
     public TableModel getCustomizeTableModel() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

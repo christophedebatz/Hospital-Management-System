@@ -212,7 +212,7 @@ public class QueryBuilder {
                         .append(" = ").append(separator).append(whereClause.getValue()).append(separator);
 
                 if (++i < this.whereClauses.size()) {
-                    sb.append(", ");
+                    sb.append("and ");
                 }
             }
         }

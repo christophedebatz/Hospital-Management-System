@@ -5,14 +5,17 @@ import com.lemasne.hms.interfaces.IController;
 import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.tools.Helpers;
+import java.awt.event.ActionListener;
 import java.util.regex.PatternSyntaxException;
 import javax.swing.RowFilter;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-abstract class AbstractController<T> implements IController, DocumentListener {
+abstract class AbstractController<T> implements IController, ActionListener, DocumentListener, ListSelectionListener {
 
     protected TableRowSorter<TableModel> sorter;
     protected final Class entityClass;
@@ -23,10 +26,11 @@ abstract class AbstractController<T> implements IController, DocumentListener {
 
     protected AbstractController(Class entityClass, IModel model, IView view) {
         this.name = entityClass.getSimpleName().toLowerCase();
+        this.dto = new ControllerDTO();
         this.entityClass = entityClass;
 
         if (model == null || view == null) {
-            throw new IllegalArgumentException("Model or view or both are null.");
+            throw new IllegalArgumentException("Model or view is null.");
         }
 
         this.model = model;
@@ -35,6 +39,13 @@ abstract class AbstractController<T> implements IController, DocumentListener {
 
         this.sorter = new TableRowSorter<>();
         this.view.addSearchBoxListener(this);
+        this.view.setSelectionListener(this);
+        this.view.setActionListener(this);
+    }
+
+    @Override
+    public IModel getModel() {
+        return this.model;
     }
 
     @Override
@@ -49,10 +60,10 @@ abstract class AbstractController<T> implements IController, DocumentListener {
         this.sorter.setModel(modelToLoad);
         this.view.getTable().setModel(modelToLoad);
         this.view.getTable().setRowSorter(this.sorter);
-        
+
         Helpers.updateRowHeights(this.view.getTable());
     }
-    
+
     @Override
     public IController setControllerDto(ControllerDTO controllerDTO) {
         this.dto = controllerDTO;
@@ -83,16 +94,24 @@ abstract class AbstractController<T> implements IController, DocumentListener {
     public void removeUpdate(DocumentEvent e) {
         this.changedUpdate(e);
     }
-    
+
     @Override
     public String getName() {
         return this.name;
     }
-    
+
     @Override
     public void executeDTORequest() {
         if (this.dto != null) {
-            
+
+        }
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        if (!e.getValueIsAdjusting()) {
+            this.view.setEnabledRemoving(this.view.getTable().getSelectedRows().length > 0 && (this.dto == null || !this.dto.isEnableJoins()));
+            this.view.setEnabledUpdating(this.view.getTable().getSelectedRows().length == 1 && (this.dto == null || !this.dto.isEnableJoins()));
         }
     }
 }

@@ -32,9 +32,11 @@ public class TextPrompt extends JLabel implements FocusListener, DocumentListene
         setShow(show);
         document = component.getDocument();
 
-        setText(text);
+        setText("  " + text);
+        setAlignmentX(JLabel.CENTER);
         setFont(component.getFont());
         setForeground(component.getForeground());
+        setIcon(new ImageIcon(TextPrompt.class.getResource("/pictures/search.png")));
         setBorder(new EmptyBorder(component.getInsets()));
         setHorizontalAlignment(JLabel.LEADING);
 
