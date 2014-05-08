@@ -132,7 +132,7 @@ abstract class AbstractDao<T> implements IDao<T> {
         }
     }
 
-    // ADD
+    // ADD (change name and prototype)
     @Override
     public boolean updateById(Map<String, Object> entityParams, Object... columnsKeysValues) {
         if (!entityParams.isEmpty()) {
@@ -152,7 +152,8 @@ abstract class AbstractDao<T> implements IDao<T> {
                         .from(entityClass)
                         .set(values)
                         .whereRange(keysNames, columnsKeysValues).toSQL()
-                ).execute();
+                ).executeUpdate() > 0;
+                
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
                 Logger.getLogger(AbstractDao.class.getName()).log(Level.SEVERE, null, ex);

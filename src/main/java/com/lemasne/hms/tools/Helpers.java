@@ -26,25 +26,36 @@ public class Helpers {
         }
     }
 
-    public static void removeFromDatabase(IView view, IController ctrl) {
+    public static String[] getKeyValues(IView view, IDao dao) {
         int[] rowsToRemove = view.getTable().getSelectedRows();
-        if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(view.getParent(), "Confirmez-vous la suppression de ces " + rowsToRemove.length + " enregistrement(s) ?", "Suppression", JOptionPane.YES_NO_OPTION)) {
-            IDao dao = ctrl.getModel().getDao();
-            String[] values = new String[dao.getKeysNames().length * rowsToRemove.length];
-            int i = 0;
+        String[] values = new String[dao.getKeysNames().length * rowsToRemove.length];
+        int i = 0;
 
-            for (int selectedRow : rowsToRemove) { // browse rows to remove
-                for (String keyName : dao.getKeysNames()) { // browse keys of the current entity and match them
-                    values[i++] = String.valueOf(
-                        view.getTable().getModel().getValueAt(
-                            selectedRow,
-                            view.getTable().getColumn(keyName.toUpperCase().replaceAll("_", " ")).getModelIndex()
+        for (int selectedRow : rowsToRemove) { // browse rows to remove
+            for (String keyName : dao.getKeysNames()) { // browse keys of the current entity and match them
+                values[i++] = String.valueOf(
+                        view.getTable().getValueAt(
+                                selectedRow,
+                                view.getTable().getColumn(keyName.toUpperCase().replaceAll("_", " ")).getModelIndex()
                         )
-                    );
-                }
+                );
             }
+        }
+        return values;
+    }
 
-            i = 0;
+    // ADD (modify)
+    public static void removeFromDatabase(IView view, IController ctrl) {
+        if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
+                view.getParent(),
+                "Confirmez-vous la suppression de ces " + view.getTable().getSelectedRows().length + " enregistrement(s) ?",
+                "Suppression",
+                JOptionPane.YES_NO_OPTION)) {
+
+            IDao dao = ctrl.getModel().getDao();
+            String[] values = Helpers.getKeyValues(view, dao);
+
+            int i = 0;
             boolean isFirst = true;
             String[] idValues = new String[dao.getKeysNames().length];
             for (String v : values) {

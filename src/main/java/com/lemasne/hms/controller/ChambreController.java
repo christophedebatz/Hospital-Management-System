@@ -18,7 +18,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -54,29 +56,44 @@ public class ChambreController extends AbstractController<Chambre> implements It
                 
                 
             case "validate":
-                List<String> data = null;
                 
-                if (!"".equals(this.formView.getNumero())) {
-                    data = new ArrayList<>(); // respect order
-                    data.add(((Service) this.formView.getServiceCombo().getSelectedItem()).getCode());
-                    data.add(this.formView.getNumero());
-                    data.add(String.valueOf(((Employe) this.formView.getSurveillantCombo().getSelectedItem()).getNumero()));
-                    data.add(String.valueOf(this.formView.getNbLits()));
-                }
-                
-                else {
+                if ("".equals(this.formView.getNumero())) {
                     JOptionPane.showMessageDialog((JFrame) this.parent, "Le numéro de la chambre est vide.");
                     return;
                 }
                 
+                final String code = ((Service) this.formView.getServiceCombo().getSelectedItem()).getCode();
+                final String numero = this.formView.getNumero();
+                final String surveillant = String.valueOf(((Employe) this.formView.getSurveillantCombo().getSelectedItem()).getNumero());
+                final String nb_lits = String.valueOf(this.formView.getNbLits());
+                
                 // add something
-                if (this.formView.getFormType().equals(FormType.ADD_FEATURE)) { 
-                    this.model.getDao().insert(data); // insert in db
+                if (this.formView.getFormType().equals(FormType.ADD_FEATURE)) {
+                    this.model.getDao().insert( new ArrayList() {{
+                            add(code);
+                            add(numero);
+                            add(surveillant);
+                            add(nb_lits);
+                        }}
+                    );
                 }
                 
                 // update something
                 else {
-                    this.model.getDao().u
+                    String[] keyValues = Helpers.getKeyValues(this.view, this.getModel().getDao());
+                    
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("code_service", code);
+                    params.put("no_chambre", numero);
+                    params.put("surveillant", surveillant);
+                    params.put("nb_lits", nb_lits);
+                    
+                    System.out.println(keyValues[0] + " " + keyValues[1]);
+                    
+                    if (!this.model.getDao().updateById(params, (Object[]) keyValues)) {
+                        JOptionPane.showMessageDialog((JFrame)this.parent, "Impossible de mettre à jour les données. Erreur: 47, Update AbstractDao");
+                        return;
+                    }
                 }
                 
                 this.loadTable();
@@ -101,19 +118,8 @@ public class ChambreController extends AbstractController<Chambre> implements It
                 );
 
                 // get selected jtable selected row
-                int rowToUpdate = view.getTable().getSelectedRow();
                 IDao dao = this.getModel().getDao();
-                String[] values = new String[dao.getKeysNames().length];
-                int i = 0;
-
-                for (String keyName : dao.getKeysNames()) { // browse keys of the current entity and match them
-                    values[i++] = String.valueOf(
-                            view.getTable().getModel().getValueAt(
-                                    rowToUpdate,
-                                    view.getTable().getColumn(keyName.toUpperCase().replaceAll("_", " ")).getModelIndex()
-                            )
-                    );
-                }
+                String[] values = Helpers.getKeyValues(this.view, dao);
 
                 // retrieve chamber
                 List<Chambre> chambres = dao.getListWith(

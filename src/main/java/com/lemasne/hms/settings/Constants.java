@@ -11,6 +11,7 @@ public class Constants {
     public final static String INFIRMIER = "infirmier";
     public final static String MALADE = "malade";
     public final static String DOCTEUR = "docteur";
+    public final static String EMPLOYE = "employe";
     public final static String HOSPITALISATION = "hospitalisation";
     public final static String SOIGNE = "soin";
 

@@ -6,6 +6,7 @@ import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.model.ChambreModel;
 import com.lemasne.hms.model.DocteurModel;
+import com.lemasne.hms.model.EmployeModel;
 import com.lemasne.hms.model.HospitalisationModel;
 import com.lemasne.hms.model.InfirmierModel;
 import com.lemasne.hms.model.MaladeModel;
@@ -34,12 +35,12 @@ public class FrontController implements IController, ActionListener, ChangeListe
     private final String name = null;
     private ControllerDTO dto;
     private FrontView view;
-    private ConnectDialogController connectDialogCtrl;
     
     private IView chambreView;
     private IView serviceView;
     private IView infirmierView;
     private IView docteurView;
+    private IView employeView;
     private IView maladeView;
     private IView hospitalisationView;
     private IView soigneView;
@@ -49,6 +50,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
     private IController serviceCtrl;
     private IController infirmierCtrl;
     private IController docteurCtrl;
+    private IController employeCtrl;
     private IController maladeCtrl;
     private IController hospitalisationCtrl;
     private IController soigneCtrl;
@@ -60,6 +62,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
         this.initService();
         this.initInfirmier();
         this.initDocteur();
+        this.initEmploye();
         this.initMalade();
         this.initHospitalisation();
         this.initSoigne();
@@ -88,6 +91,11 @@ public class FrontController implements IController, ActionListener, ChangeListe
         this.docteurCtrl = new DocteurController(new DocteurModel(), this.docteurView);
     }
     
+    private void initEmploye() {
+        this.employeView = new TabView(Constants.EMPLOYE);
+        this.employeCtrl = new EmployeController(new EmployeModel(), this.employeView);
+    }
+    
     private void initMalade() {
         this.maladeView = new TabView(Constants.MALADE);
         this.maladeCtrl = new MaladeController(new MaladeModel(), this.maladeView);
@@ -109,6 +117,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
         views.add((Component) this.serviceView);
         views.add((Component) this.infirmierView);
         views.add((Component) this.docteurView);
+        views.add((Component) this.employeView);
         views.add((Component) this.maladeView);
         views.add((Component) this.hospitalisationView);
         views.add((Component) this.soigneView);
@@ -128,8 +137,10 @@ public class FrontController implements IController, ActionListener, ChangeListe
     public void actionPerformed(ActionEvent event) {
         switch (event.getActionCommand()) {
             case "connect":
-                ConnectDialogView connectDialogView = new ConnectDialogView(this.view, true);
-                this.connectDialogCtrl = new ConnectDialogController(connectDialogView, this);
+                new ConnectDialogController(
+                        new ConnectDialogView(this.view, true), 
+                        this
+                );
             break;
             default:
                 this.view.dispose();
@@ -162,6 +173,9 @@ public class FrontController implements IController, ActionListener, ChangeListe
             break;
             case Constants.DOCTEUR:
                 this.currentCtrl = this.docteurCtrl;
+            break;
+            case Constants.EMPLOYE:
+                this.currentCtrl = this.employeCtrl;
             break;
             case Constants.HOSPITALISATION:
                 this.currentCtrl = this.hospitalisationCtrl;
