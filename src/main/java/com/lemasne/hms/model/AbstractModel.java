@@ -54,6 +54,20 @@ abstract class AbstractModel<T> implements IModel {
         return null;
     }
     
+    @Override
+    public DefaultComboBoxModel getComboBoxModel(ResultSet resultData) {
+        if (this.dao != null) {
+            DefaultComboBoxModel model = new DefaultComboBoxModel();
+            List<T> list = this.dao.getListWith(resultData);
+            
+            for (T c : list) {
+                model.addElement((T) c);
+            }
+            return model;
+        }
+        return null;
+    }
+    
     protected DefaultTableModel getTableModel(boolean isJoined) {
         if (this.dao == null) {
             return null;

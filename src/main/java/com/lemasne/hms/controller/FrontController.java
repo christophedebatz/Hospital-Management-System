@@ -131,12 +131,9 @@ public class FrontController implements IController, ActionListener, ChangeListe
                 ConnectDialogView connectDialogView = new ConnectDialogView(this.view, true);
                 this.connectDialogCtrl = new ConnectDialogController(connectDialogView, this);
             break;
-            case "close":
+            default:
                 this.view.dispose();
                 System.exit(0);
-            break;
-            default:
-                System.out.println("Other action...");
             break;
         }
     }

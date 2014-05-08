@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 abstract class AbstractDao<T> implements IDao<T> {
 
@@ -40,10 +41,44 @@ abstract class AbstractDao<T> implements IDao<T> {
             ).executeQuery();
 
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
             Logger.getLogger(AbstractDao.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Could not execute query : " + ex.getMessage());
         }
 
+        return result;
+    }
+    
+    // ADD
+    // find results "where fieldsNames[i] = fieldsValues[i] and ... "
+    @Override
+    public ResultSet findAllByFieldsNames(String[] fieldsNames, Object[] fieldsValues) {
+        ResultSet result = null;
+        
+        try {
+            if (fieldsNames.length != fieldsValues.length) {
+                throw new Exception("Fields names and fields values have not the same size.");
+            }
+            
+            if (fieldsNames.length == 0 || fieldsValues.length == 0) {
+                throw new Exception("Fields should not be empty.");
+            }
+            
+            QueryBuilder qb = QueryBuilder.select("*")
+                                          .from(entityClass)
+                                          .where(fieldsNames[0], fieldsValues[0]);
+                    
+            for (int i = 1; i < fieldsNames.length; i++) {
+                qb.addWhere(fieldsNames[i], fieldsValues[i]);
+            }
+            
+            result = this.dbc.prepareStatement(qb.toSQL()).executeQuery();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            Logger.getLogger(AbstractDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Could not execute query : " + ex.getMessage());
+        }
+        
         return result;
     }
 
@@ -56,7 +91,9 @@ abstract class AbstractDao<T> implements IDao<T> {
                         .values(values).toSQL()
                 ).execute();
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
                 Logger.getLogger(AbstractDao.class.getName()).log(Level.SEVERE, null, ex);
+                System.err.println("Could not execute query : " + ex.getMessage());
             }
         }
         return false;
@@ -70,6 +107,7 @@ abstract class AbstractDao<T> implements IDao<T> {
             result = this.dbc.prepareStatement(
                     QueryBuilder.select("*").from(entityClass).toSQL()).executeQuery();
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
             Logger.getLogger(AbstractDao.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Could not execute query : " + ex.getMessage());
         }
@@ -87,18 +125,16 @@ abstract class AbstractDao<T> implements IDao<T> {
                     .whereRange(keysNames, keysValues).toSQL()
             ).executeUpdate();
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
             Logger.getLogger(AbstractDao.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println("Could not execute query : " + ex.getMessage());
-            System.out.println(QueryBuilder.delete()
-                    .from(entityClass)
-                    .whereRange(keysNames, keysValues).toSQL());
             return 0;
         }
     }
 
+    // ADD
     @Override
-    public boolean updateFromId(Map<String, Object> entityParams, Object... columnsKeysValues
-    ) {
+    public boolean updateById(Map<String, Object> entityParams, Object... columnsKeysValues) {
         if (!entityParams.isEmpty()) {
             String[] params = new String[entityParams.size()];
             Object[] values = new String[entityParams.size()];
@@ -118,6 +154,7 @@ abstract class AbstractDao<T> implements IDao<T> {
                         .whereRange(keysNames, columnsKeysValues).toSQL()
                 ).execute();
             } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
                 Logger.getLogger(AbstractDao.class.getName()).log(Level.SEVERE, null, ex);
                 System.err.println("Could not execute query : " + ex.getMessage());
             }

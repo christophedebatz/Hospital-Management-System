@@ -83,7 +83,6 @@ public final class FrontView extends JFrame implements IView {
         connexionMenuItem = new javax.swing.JMenuItem();
         checkboxActivateJoins = new javax.swing.JCheckBoxMenuItem();
         closeMenuItem = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -118,9 +117,6 @@ public final class FrontView extends JFrame implements IView {
         jMenu5.add(closeMenuItem);
 
         jMenuBar1.add(jMenu5);
-
-        jMenu3.setText("Mise à jour");
-        jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Historisation");
         jMenuBar1.add(jMenu4);
@@ -166,7 +162,6 @@ public final class FrontView extends JFrame implements IView {
     private javax.swing.JMenuItem connexionMenuItem;
     private javax.swing.JTabbedPane homeTab;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;

@@ -11,7 +11,8 @@ public interface IDao<T> {
     public ResultSet findAll();
     public ResultSet findAllWithJoins();
     public int removeById(Object... keysValues);
-    public boolean updateFromId(Map<String, Object> entityParams, Object... columnsKeysValues);
+    public boolean updateById(Map<String, Object> entityParams, Object... columnsKeysValues);
     public List<T> getListWith(ResultSet result);
     public boolean insert(List<String> values);
+    public ResultSet findAllByFieldsNames(String[] fieldsNames, Object[] fieldsValues);
 }

@@ -5,12 +5,15 @@ import com.lemasne.hms.interfaces.IFormView.FormType;
 import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.model.ChambreModel;
+import com.lemasne.hms.model.EmployeModel;
+import com.lemasne.hms.model.ServiceModel;
 import com.lemasne.hms.model.dao.ChambreDao;
 import com.lemasne.hms.model.entities.Chambre;
 import com.lemasne.hms.model.entities.Employe;
 import com.lemasne.hms.model.entities.Service;
 import com.lemasne.hms.tools.Helpers;
 import com.lemasne.hms.view.forms.ChambreFormView;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -31,6 +34,7 @@ public class ChambreController extends AbstractController<Chambre> implements It
 
         this.formView = new ChambreFormView((JFrame) this.parent, true);
         this.formView.setItemListener(this);
+        this.formView.setActionListener(this);
     }
 
     @Override
@@ -46,31 +50,57 @@ public class ChambreController extends AbstractController<Chambre> implements It
                         )
                 );
                 this.formView.setVisible(true);
-                break;
+            break;
+                
+                
             case "validate":
-                if (this.formView.getFormType().equals(FormType.ADD_FEATURE)) { // add something
-                    if (!"".equals(this.formView.getNumero())) {
-                        List<String> toInsert = new ArrayList<>(); // respect order
-                        toInsert.add(((Service) this.formView.getServiceCombo().getSelectedItem()).getCode());
-                        toInsert.add(this.formView.getNumero());
-                        toInsert.add(String.valueOf(((Employe) this.formView.getSurveillantCombo().getSelectedItem()).getNumero()));
-                        toInsert.add(String.valueOf(this.formView.getNbLits()));
-
-                        this.model.getDao().insert(toInsert); // insert in db
-
-                        this.loadTable();
-                        this.formView.dispose();
-                    } else {
-                        JOptionPane.showMessageDialog((JFrame) this.parent, "Le numéro de la chambre est vide.");
-                    }
+                List<String> data = null;
+                
+                if (!"".equals(this.formView.getNumero())) {
+                    data = new ArrayList<>(); // respect order
+                    data.add(((Service) this.formView.getServiceCombo().getSelectedItem()).getCode());
+                    data.add(this.formView.getNumero());
+                    data.add(String.valueOf(((Employe) this.formView.getSurveillantCombo().getSelectedItem()).getNumero()));
+                    data.add(String.valueOf(this.formView.getNbLits()));
                 }
-                break;
+                
+                else {
+                    JOptionPane.showMessageDialog((JFrame) this.parent, "Le numéro de la chambre est vide.");
+                    return;
+                }
+                
+                // add something
+                if (this.formView.getFormType().equals(FormType.ADD_FEATURE)) { 
+                    this.model.getDao().insert(data); // insert in db
+                }
+                
+                // update something
+                else {
+                    this.model.getDao().u
+                }
+                
+                this.loadTable();
+                this.formView.dispose();
+            break;
+                
+                
             case "remove":
                 Helpers.removeFromDatabase(this.view, this);
                 break;
+                
+                
             case "update":
                 this.formView.setFormType(FormType.UPDATE_FEATURE);
 
+                // fill comboboxes
+                this.formView.getServiceCombo().setModel(((ChambreModel) this.model).getChambreServicesComboBoxModel());
+                this.formView.getSurveillantCombo().setModel(
+                        ((ChambreModel) this.model).getChambreInfirmiersComboBoxModel(
+                                (Service) this.formView.getServiceCombo().getSelectedItem()
+                        )
+                );
+
+                // get selected jtable selected row
                 int rowToUpdate = view.getTable().getSelectedRow();
                 IDao dao = this.getModel().getDao();
                 String[] values = new String[dao.getKeysNames().length];
@@ -85,18 +115,48 @@ public class ChambreController extends AbstractController<Chambre> implements It
                     );
                 }
 
+                // retrieve chamber
                 List<Chambre> chambres = dao.getListWith(
                         dao.findById((Object[]) values)
                 );
 
                 Chambre chambre = null;
-                if (!chambres.isEmpty()) {
+                if (!chambres.isEmpty()) { // if result not null
                     chambre = chambres.get(0);
                     this.formView.setNbLits(chambre.getNb_lits());
                     this.formView.setNumero(chambre.getNo_chambre());
-                }
 
-                this.formView.setVisible(true);
+                    // retrieve associated service (with found code_service)
+                    IModel serviceModel = new ServiceModel();
+                    List<Service> services = serviceModel.getDao().getListWith(
+                            serviceModel.getDao().findAllByFieldsNames(
+                                    new String[]{"code"},
+                                    new Object[]{chambre.getCode_service()}
+                            )
+                    );
+
+                    if (!services.isEmpty()) { // select service
+                        this.formView.getServiceCombo().getModel().setSelectedItem((Service) services.get(0));
+                    }
+
+                    // retrieve surveillant
+                    IModel employeModel = new EmployeModel();
+                    List<Employe> employes = employeModel.getDao().getListWith(
+                            employeModel.getDao().findAllByFieldsNames(
+                                    new String[]{"numero"},
+                                    new Object[]{chambre.getSurveillant()}
+                            )
+                    );
+
+                    if (!employes.isEmpty()) { // select employe
+                        this.formView.getSurveillantCombo().getModel().setSelectedItem((Employe) employes.get(0));
+                    }
+
+                    this.formView.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog((Component) this.parent, "Cette donnée semble inexistante ou déjà supprimée/éditée.");
+                    this.view.dispose();
+                }
                 break;
             default:
                 this.formView.dispose();
