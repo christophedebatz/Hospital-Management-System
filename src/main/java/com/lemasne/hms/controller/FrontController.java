@@ -83,7 +83,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
     
     private void initInfirmier() {
         this.infirmierView = new TabView(Constants.INFIRMIER);
-        this.infirmierCtrl = new InfirmierController(new InfirmierModel(), this.infirmierView);
+        this.infirmierCtrl = new InfirmierController(new InfirmierModel(), this.infirmierView, this.view);
     }
     
     private void initDocteur() {
