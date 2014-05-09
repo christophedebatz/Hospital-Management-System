@@ -101,6 +101,24 @@ public class ChambreDao extends AbstractDao<Chambre> {
 
         return result;
     }
+    
+    public ResultSet findAllChambreByService(Service service) {
+        ResultSet result = null;
+
+        try {
+            result = this.dbc.prepareStatement(
+                    QueryBuilder.select("*")
+                        .distinct()
+                        .from(entityClass)
+            .where("code_service", service.getCode()).toSQL()
+            ).executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(ChambreDao.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Could not execute query : " + ex.getMessage());
+        }
+
+        return result;
+    }
 
     @Override
     public ResultSet findAllWithJoins() {

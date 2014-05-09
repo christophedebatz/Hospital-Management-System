@@ -49,7 +49,7 @@ public class HospitalisationDao extends AbstractDao<Hospitalisation> {
 
         try {
             result = this.dbc.prepareStatement(
-                    QueryBuilder.select("no_malade", "Malade.prenom as prenom_malade", "Malade.prenom as nom_malade", "Service.nom as nom_service", "Hospitalisation.no_chambre", "Employe.nom as nom_surveillant", "lit")
+                    QueryBuilder.select("no_malade", "Malade.prenom as prenom_malade", "Malade.nom as nom_malade", "Service.nom as nom_service", "Hospitalisation.no_chambre", "Employe.nom as nom_surveillant", "lit")
                     .from(entityClass)
                     .leftJoin(Service.class)
                         .on("code_service", "code")

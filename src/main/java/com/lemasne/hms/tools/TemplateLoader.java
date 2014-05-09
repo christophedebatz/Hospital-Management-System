@@ -9,6 +9,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class TemplateLoader {
 
     public static void load(String templateName) {
+
+        if (templateName == null) {
+            TemplateLoader.loadDefault();
+            return;
+        }
+        
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if (templateName.equals(info.getName())) {
@@ -22,6 +28,15 @@ public class TemplateLoader {
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                 JOptionPane.showMessageDialog(null, "Cannot load " + templateName + " template.");
             }
+        }
+    }
+
+    // ADD
+    public static void loadDefault() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            JOptionPane.showMessageDialog(null, "Cannot load default template.");
         }
     }
 

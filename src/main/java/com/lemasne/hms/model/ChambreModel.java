@@ -29,6 +29,19 @@ public class ChambreModel extends AbstractModel<Chambre> {
         return null;
     }
     
+    public DefaultComboBoxModel getChambreByService(Service service) {
+        if (this.dao != null) {
+            DefaultComboBoxModel model = new DefaultComboBoxModel();
+            List<Chambre> chambre = this.dao.getListWith(
+                    ((ChambreDao)this.dao).findAllChambreByService(service));
+            for (Chambre c : chambre) {
+                model.addElement((Chambre) c);
+            }
+            return model;
+        }
+        return null;
+    }
+    
     public DefaultComboBoxModel getChambreInfirmiersComboBoxModel(Service service) {
         if (this.dao != null && service != null) {
             DefaultComboBoxModel model = new DefaultComboBoxModel();

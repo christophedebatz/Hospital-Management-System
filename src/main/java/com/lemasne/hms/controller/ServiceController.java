@@ -6,19 +6,19 @@ import com.lemasne.hms.interfaces.IFormView.FormType;
 import com.lemasne.hms.interfaces.IModel;
 import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.model.EmployeModel;
-import com.lemasne.hms.model.dao.EmployeDao;
 import com.lemasne.hms.model.entities.Employe;
 import com.lemasne.hms.model.entities.Service;
 import com.lemasne.hms.tools.Helpers;
+import com.lemasne.hms.tools.TemplateLoader;
 import com.lemasne.hms.view.forms.ServiceFormView;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class ServiceController extends AbstractController<Service> {
 
@@ -36,6 +36,10 @@ public class ServiceController extends AbstractController<Service> {
     // ADD (modified)
     @Override
     public void actionPerformed(ActionEvent event) {
+        
+        TemplateLoader.load(FrontController.currentSkin);
+        SwingUtilities.updateComponentTreeUI(this.formView);
+        
         switch (event.getActionCommand()) {
 
             case "add":
@@ -101,13 +105,7 @@ public class ServiceController extends AbstractController<Service> {
 
                 // adding
                 if (this.formView.getFormType() == FormType.ADD_FEATURE) {
-                    this.model.getDao().insert(new ArrayList() {{
-                            add(codeService);
-                            add(nomService);
-                            add(batimentService);
-                            add(String.valueOf(directeurService.getNumero()));
-                        }
-                    });
+                    Helpers.addToDatabase(this.model.getDao(), codeService, nomService, batimentService, directeurService.getNumero());
                 } 
 
                 // editing

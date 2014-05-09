@@ -64,9 +64,12 @@ public final class FrontView extends JFrame implements IView {
         this.closeMenuItem.setActionCommand("close");
         this.connexionMenuItem.addActionListener(listener);
         this.connexionMenuItem.setActionCommand("connect");
+        this.defaultSkin.setActionCommand("default_skin");
+        this.defaultSkin.addActionListener(listener);
+        this.nimbusSkin.setActionCommand("nimbus_skin");
+        this.nimbusSkin.addActionListener(listener);
 
         if (this.globalDisplay != null) {
-            System.err.println("ok");
             this.globalDisplay.setActionListener(listener);
         }
     }
@@ -83,6 +86,9 @@ public final class FrontView extends JFrame implements IView {
         connexionMenuItem = new javax.swing.JMenuItem();
         checkboxActivateJoins = new javax.swing.JCheckBoxMenuItem();
         closeMenuItem = new javax.swing.JMenuItem();
+        menuSkin = new javax.swing.JMenu();
+        defaultSkin = new javax.swing.JMenuItem();
+        nimbusSkin = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -117,6 +123,16 @@ public final class FrontView extends JFrame implements IView {
         jMenu5.add(closeMenuItem);
 
         jMenuBar1.add(jMenu5);
+
+        menuSkin.setText("Theme");
+
+        defaultSkin.setText("Default");
+        menuSkin.add(defaultSkin);
+
+        nimbusSkin.setText("Nimbus");
+        menuSkin.add(nimbusSkin);
+
+        jMenuBar1.add(menuSkin);
 
         jMenu4.setText("Historisation");
         jMenuBar1.add(jMenu4);
@@ -160,12 +176,15 @@ public final class FrontView extends JFrame implements IView {
     private javax.swing.JCheckBoxMenuItem checkboxActivateJoins;
     private javax.swing.JMenuItem closeMenuItem;
     private javax.swing.JMenuItem connexionMenuItem;
+    private javax.swing.JMenuItem defaultSkin;
     private javax.swing.JTabbedPane homeTab;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JLabel labelIcon;
+    private javax.swing.JMenu menuSkin;
+    private javax.swing.JMenuItem nimbusSkin;
     // End of variables declaration//GEN-END:variables
 
     @Override

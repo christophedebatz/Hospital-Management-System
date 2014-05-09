@@ -188,8 +188,8 @@ public class QueryBuilder {
             sb.append(" values (");
             
             int i = 0;
-            for (String value : this.fields) {
-                sb.append("'").append(value).append("'");
+            for (Object value : this.fields) {
+                sb.append("'").append(value.toString()).append("'");
                 
                 if (++i < this.fields.size()) {
                     sb.append(", ");

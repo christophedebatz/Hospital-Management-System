@@ -12,18 +12,19 @@ import com.lemasne.hms.model.entities.Chambre;
 import com.lemasne.hms.model.entities.Employe;
 import com.lemasne.hms.model.entities.Service;
 import com.lemasne.hms.tools.Helpers;
+import com.lemasne.hms.tools.TemplateLoader;
 import com.lemasne.hms.view.forms.ChambreFormView;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class ChambreController extends AbstractController<Chambre> implements ItemListener {
 
@@ -41,6 +42,10 @@ public class ChambreController extends AbstractController<Chambre> implements It
 
     @Override
     public void actionPerformed(ActionEvent event) {
+        
+        TemplateLoader.load(FrontController.currentSkin);
+        SwingUtilities.updateComponentTreeUI(this.formView);
+        
         switch (event.getActionCommand()) {
             case "add":
                 this.formView.setFormType(FormType.ADD_FEATURE);
@@ -69,13 +74,7 @@ public class ChambreController extends AbstractController<Chambre> implements It
                 
                 // add something
                 if (this.formView.getFormType().equals(FormType.ADD_FEATURE)) {
-                    this.model.getDao().insert( new ArrayList() {{
-                            add(code);
-                            add(numero);
-                            add(surveillant);
-                            add(nb_lits);
-                        }}
-                    );
+                    Helpers.addToDatabase(this.model.getDao(), code, numero, surveillant, nb_lits);
                 }
                 
                 // update something
@@ -115,7 +114,7 @@ public class ChambreController extends AbstractController<Chambre> implements It
                 List<Chambre> chambres = dao.getListWith(
                         dao.findById((Object[]) values)
                 );
-
+                
                 Chambre chambre;
                 if (!chambres.isEmpty()) { // if result not null
                     chambre = chambres.get(0);
@@ -130,6 +129,8 @@ public class ChambreController extends AbstractController<Chambre> implements It
                                     new Object[]{chambre.getCode_service()}
                             )
                     );
+                    
+                    this.formView.getServiceCombo().setModel(serviceModel.getComboBoxModel());
 
                     if (!services.isEmpty()) { // select service
                         this.formView.getServiceCombo().getModel().setSelectedItem((Service) services.get(0));
@@ -143,6 +144,8 @@ public class ChambreController extends AbstractController<Chambre> implements It
                                     new Object[]{chambre.getSurveillant()}
                             )
                     );
+                    
+                    this.formView.getSurveillantCombo().setModel(employeModel.getComboBoxModel());
 
                     if (!employes.isEmpty()) { // select employe
                         this.formView.getSurveillantCombo().getModel().setSelectedItem((Employe) employes.get(0));

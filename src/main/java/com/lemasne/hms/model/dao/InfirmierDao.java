@@ -40,7 +40,7 @@ public class InfirmierDao extends AbstractDao<Infirmier> {
         
         return infirmiers;
     }
-
+    
     @Override
     public ResultSet findAllWithJoins() {
         ResultSet result = null;

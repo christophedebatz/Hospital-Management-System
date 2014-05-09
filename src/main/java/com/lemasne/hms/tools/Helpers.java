@@ -4,6 +4,7 @@ import com.lemasne.hms.interfaces.IController;
 import com.lemasne.hms.interfaces.IDao;
 import com.lemasne.hms.interfaces.IView;
 import java.awt.Component;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -70,5 +71,29 @@ public class Helpers {
 
             ctrl.loadTable();
         }
+    }
+
+    // ADD
+    public static boolean addToDatabase(IDao dao, Object... values) {
+        return dao.insert(Arrays.asList(values));
+    }
+
+    // ADD
+    public static String formatTelephone(String telephone, String sep) {
+        if (telephone.length() <= 10) {
+            String separator = sep;
+            if (sep == null) {
+                separator = " ";
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < telephone.length(); i++) {
+                if (i > 0 && i % 2 == 0) {
+                    sb.append(separator);
+                }
+                sb.append(telephone.charAt(i));
+            }
+            return sb.toString();
+        }
+        return telephone;
     }
 }

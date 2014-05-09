@@ -46,7 +46,7 @@ public class SoigneDao extends AbstractDao {
 
         try {
             result = this.dbc.prepareStatement(
-                    QueryBuilder.select("Malade.prenom as prenom_malade", "Malade.prenom as nom_malade", "Employe.prenom as prenom_docteur", "Employe.nom as nom_docteur", "specialite")
+                    QueryBuilder.select("Malade.prenom as prenom_malade", "Malade.nom as nom_malade", "Employe.prenom as prenom_docteur", "Employe.nom as nom_docteur", "specialite")
                     .from(entityClass)
                     .leftJoin(Docteur.class)
                         .on("no_docteur", "Docteur.numero")

@@ -26,13 +26,16 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 
 public class FrontController implements IController, ActionListener, ChangeListener, ItemListener {
     
+    private List<Component> views;
     private final String name = null;
+    public static String currentSkin = "Nimbus";
     private ControllerDTO dto;
     private FrontView view;
     
@@ -88,22 +91,22 @@ public class FrontController implements IController, ActionListener, ChangeListe
     
     private void initDocteur() {
         this.docteurView = new TabView(Constants.DOCTEUR);
-        this.docteurCtrl = new DocteurController(new DocteurModel(), this.docteurView);
+        this.docteurCtrl = new DocteurController(new DocteurModel(), this.docteurView, this.view);
     }
     
     private void initEmploye() {
         this.employeView = new TabView(Constants.EMPLOYE);
-        this.employeCtrl = new EmployeController(new EmployeModel(), this.employeView);
+        this.employeCtrl = new EmployeController(new EmployeModel(), this.employeView, this.view);
     }
     
     private void initMalade() {
         this.maladeView = new TabView(Constants.MALADE);
-        this.maladeCtrl = new MaladeController(new MaladeModel(), this.maladeView);
+        this.maladeCtrl = new MaladeController(new MaladeModel(), this.maladeView, this.view);
     }
     
     private void initHospitalisation() {
         this.hospitalisationView = new TabView(Constants.HOSPITALISATION);
-        this.hospitalisationCtrl = new HospitalisationController(new HospitalisationModel(), this.hospitalisationView);
+        this.hospitalisationCtrl = new HospitalisationController(new HospitalisationModel(), this.hospitalisationView, this.view);
     }
     
     private void initSoigne() {
@@ -112,7 +115,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
     }
         
     private void initFront(boolean forceConnect) {
-        List<Component> views = new ArrayList<>();
+        this.views = new ArrayList<>();
         views.add((Component) this.chambreView);
         views.add((Component) this.serviceView);
         views.add((Component) this.infirmierView);
@@ -137,11 +140,34 @@ public class FrontController implements IController, ActionListener, ChangeListe
     public void actionPerformed(ActionEvent event) {
         switch (event.getActionCommand()) {
             case "connect":
-                new ConnectDialogController(
-                        new ConnectDialogView(this.view, true), 
-                        this
-                );
+                new ConnectDialogController(new ConnectDialogView(this.view, true), this);
+                
             break;
+                
+            case "nimbus_skin":
+                TemplateLoader.load("Nimbus");
+                SwingUtilities.updateComponentTreeUI(this.view);
+                
+                for (Component c : this.views) {
+                    ((TabView)c).addComponentBehaviors();
+                }
+                
+                currentSkin = "Nimbus";
+                
+                break;
+                        
+            case "default_skin":
+                TemplateLoader.loadDefault();
+                SwingUtilities.updateComponentTreeUI(this.view);
+                
+                for (Component c : this.views) {
+                    ((TabView)c).addComponentBehaviors();
+                }
+                
+                currentSkin = null;
+                
+                break;
+                
             default:
                 this.view.dispose();
                 System.exit(0);
@@ -210,6 +236,7 @@ public class FrontController implements IController, ActionListener, ChangeListe
             switch (this.dto.getCtrlRequest()) {
                 case "launch_connexion":
                     this.view.dispose();
+                    System.gc();
                     new FrontController(true);
                 break;
             }

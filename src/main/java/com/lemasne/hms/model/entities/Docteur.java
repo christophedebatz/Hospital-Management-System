@@ -13,11 +13,11 @@ public class Docteur {
     }
 
        
-    public int getId() {
+    public int getNumero() {
         return numero;
     }
 
-    public void setId(int numero) {
+    public void setNumero(int numero) {
         this.numero = numero;
     }
 

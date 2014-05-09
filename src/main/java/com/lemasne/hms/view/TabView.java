@@ -9,7 +9,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionListener;
 
 
-public class TabView extends javax.swing.JPanel implements IView {
+public final class TabView extends javax.swing.JPanel implements IView {
     
     public TabView() {
     }
@@ -58,7 +58,7 @@ public class TabView extends javax.swing.JPanel implements IView {
         this.resultsList.getSelectionModel().addListSelectionListener(listener);
     }
     
-    private void addComponentBehaviors() {
+    public void addComponentBehaviors() {
         TextPrompt tp = new TextPrompt("Rechercher un(e) " + super.getName().toLowerCase() + "...", this.searchBox);
         tp.setForeground(Color.DARK_GRAY);
         tp.changeAlpha(170);        

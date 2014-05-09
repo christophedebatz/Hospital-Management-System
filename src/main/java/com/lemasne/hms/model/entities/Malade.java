@@ -65,5 +65,8 @@ public class Malade {
         this.mutuelle = mutuelle;
     }
     
-    
+    @Override
+    public String toString() {
+        return this.prenom + " " + this.nom.toUpperCase();
+    }
 }

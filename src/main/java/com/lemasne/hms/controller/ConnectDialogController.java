@@ -6,10 +6,12 @@ import com.lemasne.hms.interfaces.IView;
 import com.lemasne.hms.settings.Config;
 import com.lemasne.hms.tools.Database;
 import com.lemasne.hms.tools.SSHTunnel;
+import com.lemasne.hms.tools.TemplateLoader;
 import com.lemasne.hms.view.ConnectDialogView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class ConnectDialogController implements ActionListener {
 
@@ -21,6 +23,9 @@ public class ConnectDialogController implements ActionListener {
         this.view = (ConnectDialogView) view;
         this.view.setLocationRelativeTo(this.view);
         this.view.setActionListener(this);
+        
+        TemplateLoader.load(FrontController.currentSkin);
+        SwingUtilities.updateComponentTreeUI(this.view);
 
         this.view.fillForm(Config.getInstance());
         this.view.setVisible(true);
