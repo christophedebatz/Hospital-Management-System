@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,10 +58,5 @@ public class ServiceDao extends AbstractDao<Service> {
         }
 
         return result;
-    }
-
-    @Override
-    public boolean updateById(Map entityParams, Object... columnsKeysValues) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

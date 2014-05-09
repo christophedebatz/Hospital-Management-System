@@ -88,8 +88,6 @@ public class ChambreController extends AbstractController<Chambre> implements It
                     params.put("surveillant", surveillant);
                     params.put("nb_lits", nb_lits);
                     
-                    System.out.println(keyValues[0] + " " + keyValues[1]);
-                    
                     if (!this.model.getDao().updateById(params, (Object[]) keyValues)) {
                         JOptionPane.showMessageDialog((JFrame)this.parent, "Impossible de mettre à jour les données. Erreur: 47, Update AbstractDao");
                         return;
@@ -109,14 +107,6 @@ public class ChambreController extends AbstractController<Chambre> implements It
             case "update":
                 this.formView.setFormType(FormType.UPDATE_FEATURE);
 
-                // fill comboboxes
-                this.formView.getServiceCombo().setModel(((ChambreModel) this.model).getChambreServicesComboBoxModel());
-                this.formView.getSurveillantCombo().setModel(
-                        ((ChambreModel) this.model).getChambreInfirmiersComboBoxModel(
-                                (Service) this.formView.getServiceCombo().getSelectedItem()
-                        )
-                );
-
                 // get selected jtable selected row
                 IDao dao = this.getModel().getDao();
                 String[] values = Helpers.getKeyValues(this.view, dao);
@@ -126,7 +116,7 @@ public class ChambreController extends AbstractController<Chambre> implements It
                         dao.findById((Object[]) values)
                 );
 
-                Chambre chambre = null;
+                Chambre chambre;
                 if (!chambres.isEmpty()) { // if result not null
                     chambre = chambres.get(0);
                     this.formView.setNbLits(chambre.getNb_lits());

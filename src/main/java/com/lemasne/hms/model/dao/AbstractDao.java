@@ -142,7 +142,7 @@ abstract class AbstractDao<T> implements IDao<T> {
 
             for (Map.Entry<String, Object> param : entityParams.entrySet()) {
                 params[i] = param.getKey();
-                values[i] = param.getValue();
+                values[i] = param.getValue().toString();
                 i++;
             }
 

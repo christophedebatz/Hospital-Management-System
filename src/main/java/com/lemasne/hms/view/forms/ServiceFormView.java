@@ -36,12 +36,24 @@ public class ServiceFormView extends JDialog implements IFormView {
        return this.batimentField.getText();
     }
     
+    public void setBatiment(String batiment) {
+        this.batimentField.setText(batiment);
+    }
+    
     public String getNomService() {
         return this.nomField.getText();
     }
     
+    public void setNomService(String nomService) {
+        this.nomField.setText(nomService);
+    }
+    
     public String getCodeField() {
         return this.codeField.getText();
+    }
+    
+    public void setCode(String code) {
+        this.codeField.setText(code);
     }
 
     @SuppressWarnings("unchecked")
