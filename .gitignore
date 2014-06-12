@@ -1,1 +1,6 @@
-/target
+/target/archive-tmp
+/target/classes
+/target/generated-sources
+/target/maven-archiver
+/target/surefire
+/target/test-classes
